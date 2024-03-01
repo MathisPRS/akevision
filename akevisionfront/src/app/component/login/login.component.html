@@ -1,0 +1,62 @@
+<div class="loginDiv mt-2">
+  <img class=" logo pt-5 mt-5"
+       src="https://www.hellopro.fr/images/logo/logo_150823.jpg"
+ alt="Logo">
+<!--  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mb-5">-->
+<!--    <div class="form-group">-->
+<!--        <mat-form-field appearance="outline">-->
+<!--        <input type="text" formControlName="username"-->
+<!--               class="form-control" placeholder="Username"-->
+<!--               [ngClass]="{ 'is-invalid': submitted && loginForm.controls['username'].errors }" />-->
+<!--        </mat-form-field>-->
+<!--          <div *ngIf="submitted && loginForm.controls['username'].errors" class="invalid-feedback">-->
+<!--            <div *ngIf="loginForm.controls['username'].errors['required']">Username is required</div>-->
+<!--        </div>-->
+<!--        <mat-form-field appearance="legacy" class=" align-items-center w-50">-->
+<!--          <mat-label >Username</mat-label>-->
+<!--          <input matInput type="text" formControlName="username"/>-->
+<!--        </mat-form-field>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <mat-form-field appearance="legacy">-->
+<!--        <input type="password" formControlName="password" placeholder="Password"-->
+<!--               class="form-control"-->
+<!--               [ngClass]="{ 'is-invalid': submitted && loginForm.controls['password'].errors }" />-->
+<!--      </mat-form-field>-->
+<!--&lt;!&ndash;        <label for="password">Password</label>&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && loginForm.controls['password'].errors }" />&ndash;&gt;-->
+<!--        <div *ngIf="submitted && loginForm.controls['password'].errors" class="invalid-feedback">-->
+<!--            <div *ngIf="loginForm.controls['password'].errors['required']">Password is required</div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <button [disabled]="loading" class="btn btn-gold">-->
+<!--            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>-->
+<!--            Login-->
+<!--        </button>-->
+<!--    </div>-->
+<!--  </form>-->
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mb-5 mt-5"  [style.fontSize.px]="getFontSize()">
+
+      <div class="form-group matformdiv">
+         <mat-form-field  class=" align-items-center">
+          <mat-label >Username</mat-label>
+          <input matInput type="username" formControlName="username">
+        </mat-form-field>
+      </div>
+    <div class="form-group matformdiv">
+         <mat-form-field  class=" align-items-center">
+          <mat-label >Password</mat-label>
+          <input matInput type="password" formControlName="password">
+        </mat-form-field>
+      </div>
+      <div class="form-group d-flex align-items-center w-30">
+          <button [disabled]="loading" class="btn mat-raised-button buttonlogin text-white ml-auto mr-auto">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Login
+          </button>
+      </div>
+  </form>
+<!--  <div class="m-auto fit-content">Version : {{ version }} </div>-->
+</div>
+

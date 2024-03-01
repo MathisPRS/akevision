@@ -1,0 +1,19 @@
+<div class="card closeThis">
+  <div class="card-body closeThis">
+    <form (ngSubmit)="onSubmit($event)">
+      <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="exelInputChange($event)"
+             accept=".xlsx" id="imp-file"/>
+      <div class="d-flex cursor-pointer justify-content-start grey-border-bottom w-50 fit-height mt-auto mb-3"
+           (click)="csvInput.click()">
+        <img src="assets/images/import.svg" class="file-img">
+        <div class="file-name">{{fileNameChoose}}</div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button class="btn mat-raised-button mat-primary text-white mr-0 ml-auto" type="submit">
+          {{calculateIfImportFile() ? 'Importer' : 'Modifier'}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

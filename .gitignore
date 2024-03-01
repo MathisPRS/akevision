@@ -1,0 +1,69 @@
+/akevisionfront/.angular/
+
+/db.sqlite3
+/.idea/
+
+#Partie back
+/akevisionback/log/
+/akevisionback/node_modules/
+/akevisionback/__pycache__
+/akevisionback/akevision/__pycache__
+/akevisionback/akevision_rest/__pycache__
+/akevisionback/akevision_rest/import_excel
+/akevisionback/akevision_rest/migrations/__pycache__
+/akevisionback/akevision_rest/akevision_excel/__pycache__
+/akevisionback/akevision_rest/import_enlevement/__pycache__
+/akevisionback/akevision_rest/mailing/__pycache__
+/akevisionback/akevision_rest/management/__pycache__
+/akevisionback/akevision_rest/management/commands/__pycache__
+/akevisionback/configlocal.cfg
+/akevisionback/version.properties
+/venv/
+/akevision/.angular/
+#Partie front
+# compiled output
+/akevisionfront/dist
+/akevisionfront/tmp
+/akevisionfront/out-tsc
+/akevisionfront/package-lock.json
+# Only exists if Bazel was run
+/akevisionfront/bazel-out
+
+# dependencies
+/akevisionfront/node_modules
+
+# profiling files
+/akevisionfront/chrome-profiler-events*.json
+/akevisionfront/speed-measure-plugin*.json
+
+# IDEs and editors
+/akevisionfront/.project
+/akevisionfront/.classpath
+/akevisionfront/.c9/
+/akevisionfront/*.launch
+/akevisionfront/.settings/
+/akevisionfront/*.sublime-workspace
+
+# IDE - VSCode
+/akevisionfront/.vscode/*
+/akevisionfront/!.vscode/settings.json
+/akevisionfront/!.vscode/tasks.json
+/akevisionfront/!.vscode/launch.json
+/akevisionfront/!.vscode/extensions.json
+/akevisionfront/.history/*
+
+# misc
+/akevisionfront/.sass-cache
+/akevisionfront/connect.lock
+/akevisionfront/coverage
+/akevisionfront/libpeerconnection.log
+/akevisionfront/npm-debug.log
+/akevisionfront/yarn-error.log
+/akevisionfront/testem.log
+/akevisionfront/typings
+
+# System Files
+/akevisionfront/.DS_Store
+/akevisionfront/Thumbs.db
+# Prod Files
+/akevisionfront/src/environments/!environment.prod.ts

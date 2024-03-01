@@ -1,0 +1,37 @@
+.loginDiv{
+  width: fit-content;
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+.buttonlogin {
+  background-color: rgba(170, 241, 129);
+}
+.matformdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 23px;
+}
+body{
+  margin-bottom: 0 !important;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.fit-content{
+  width: fit-content;
+  font-size: 10px;
+}
+.logo{
+  width: auto;
+  height: 400px;
+}
+mat-form-field {
+  width: 70%;
+  height: 120%;
+  font-size: 23px;
+}

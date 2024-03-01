@@ -1,0 +1,92 @@
+<nav class="navbar navbar-expand-md d-flex flex-nowrap justify-content-between pl-0 pr-0 pb-0 mediaDisable" *ngIf="currentUser.token !== ''">
+    <ul class="navbar-nav d-flex justify-content-between w-100 flex-nowrap mediaDisable ">
+        <li class="nav-item ml-2 pr-1 mediaDisable d-flex row  row-no-gutters" (click)="openCloseNav()">
+        <span class="material-icons navBarItem">menu</span>
+          <app-alert *ngIf="!currentUser"></app-alert>
+      </li>
+      <li class="nav-item logo mediaDisable d-flex row  row-no-gutters">
+        <div *ngIf="!prodFlag" class="recetteflag fit-content mt-auto mb-auto mr-2">RECETTE</div>
+        <img class="nav-link logo p-0"
+          src="https://www.hellopro.fr/images/logo/logo_150823.jpg"
+             alt="Logo">
+      </li>
+      <li class="nav-item mediaDisable navBarItem d-flex " [matMenuTriggerFor]="menu">
+        <div class="align-center cursor-pointer mt-auto mb-auto">{{currentUser.user.firstName}}</div>
+        <div class="material-icons ">person</div>
+        <mat-menu #menu="matMenu" class="mr-3">
+          <button mat-menu-item routerLink="/support/" class="button-dropdown">
+              <mat-icon class="drop-icon">help</mat-icon>
+              <span>Support</span>
+          </button>
+          <button mat-menu-item (click)="logout()" class="button-dropdown">
+            <mat-icon class="drop-icon">power_settings_new</mat-icon>
+            <span>Deconnecter</span>
+          </button>
+        </mat-menu>
+      </li>
+    </ul>
+</nav>
+
+<div id="main">
+  <div id="mySidenav" class="sidenav mediaDisable" *ngIf="currentUser.token !== ''">
+    <a routerLink="/home/" routerLinkActive="activeNav"
+       class="d-flex nowrap align-items-center pl-0  navItemleft" >
+      <img class="mr-3 ml-2 navIcon" src="/assets/images/home.png" alt="dashboard" routerLinkActive="activeIcon">
+        <div class="visible-xs-inline blackcolor" routerLinkActive="activeNav">Dashboard</div>
+    </a>
+    <a routerLink="/import/"  routerLinkActive="activeNav"
+       class="d-flex nowrap align-items-center pl-0 navItemleft" >
+      <img class="mr-3 ml-2 navIcon" src="/assets/images/download.png" alt="Opé" routerLinkActive="activeIcon">
+        <div class="visible-xs-inline text-nowrap blackcolor" routerLinkActive="activeNav">Import</div>
+    </a>
+    <a routerLink="/download/" routerLinkActive="activeNav"
+       class="d-flex nowrap align-items-center pl-0 navItemleft" >
+      <img class="mr-3 ml-2 navIcon" src="/assets/images/send.png" alt="customer" routerLinkActive="activeIcon">
+        <div class="visible-xs-inline blackcolor" routerLinkActive="activeNav">Envois</div>
+    </a>
+</div>
+
+<div id="container" class="tocenter">
+    <router-outlet></router-outlet>
+
+</div>
+
+<div  id="burgerMobil" class="menuMobil centerBottom " (click)="openCloseNav()" *ngIf="currentUser.token !== ''">
+   <a routerLink="/home/"  routerLinkActive="activeNavMobil"
+      class="d-flex itemMobil" >
+     <span class="material-icons m-auto iconNavBottom" routerLinkActive="activeNav">dashboard</span>
+     <div class="littlefont m-auto" routerLinkActive="activeNav">About</div>
+   </a>
+    <a routerLink="/clients/"  routerLinkActive="activeNavMobil"
+       class="d-flex itemMobil">
+      <span class="material-icons m-auto iconNavBottom" routerLinkActive="activeNav">supervisor_account</span>
+      <div class="littlefont m-auto" routerLinkActive="activeNav">Clients</div>
+    </a>
+
+    <a routerLink="/mat-material/"  routerLinkActive="activeNavMobil"
+       class="d-flex itemMobil" >
+      <span class="material-icons m-auto iconNavBottom" routerLinkActive="activeNav">model_training</span>
+      <div class="littlefont m-auto" routerLinkActive="activeNav">Cours</div>
+    </a>
+    <a routerLink="/invoice/"  routerLinkActive="activeNavMobil"
+       class="d-flex itemMobil">
+      <span class="material-icons m-auto iconNavBottom" routerLinkActive="activeNav">request_quote</span>
+      <div class="littlefont m-auto" routerLinkActive="activeNav">Invoice</div>
+    </a>
+    <a routerLink="/commercial-operation/"  routerLinkActive="activeNavMobil"
+       class="d-flex itemMobil">
+      <span class="material-icons m-auto iconNavBottom" routerLinkActive="activeNav">local_shipping</span>
+      <div class="littlefont m-auto" routerLinkActive="activeNav">Opé</div>
+    </a>
+    <a routerLink="/support/"  routerLinkActive="activeNavMobil"
+       class="d-flex itemMobil" >
+      <span class="material-icons m-auto iconNavBottom" routerLinkActive="activeNav">contact_support</span>
+      <div class="littlefont m-auto" routerLinkActive="activeNav">Support</div>
+    </a>
+    <a href="#" class="d-flex itemMobil" (click)="logout()">
+      <span class="material-icons m-auto iconNavBottom" routerLinkActive="activeNav">power_settings_new</span>
+      <div class="littlefont m-auto" routerLinkActive="activeNavMobil">Logout</div>
+    </a>
+</div>
+
+

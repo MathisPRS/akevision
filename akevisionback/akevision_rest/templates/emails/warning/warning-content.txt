@@ -1,0 +1,11 @@
+Bonjour,
+
+Des informations concernant l'ordre de transport ont été modifiées.
+
+Vous trouverez dans le lien ci-dessous le(s) ordre(s) de transport que l'on vous a confié(s).
+
+Lien pour visualiser, imprimer le(s) OT(s): {{ body }}
+(si ce lien ne fonctionne pas, merci de nous contacter au 03 64 60 64 61)
+
+Belle journée,
+L'équipe Octi.

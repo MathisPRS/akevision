@@ -1,0 +1,23 @@
+<h2> Material Date picker Test </h2>
+<mat-form-field>
+  <input matInput [matDatepicker]="picker" placeholder="Choisir une date">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<h2> Material Date time picker Test </h2>
+<form novalidate [formGroup]="form">
+	<mat-form-field>
+		<mat-placeholder>Start DateTime</mat-placeholder>
+		<input matInput formControlName="startDate" [matDatetimepicker]="dts" required autocomplete="false">
+		<mat-datetimepicker-toggle [for]="dts" matSuffix></mat-datetimepicker-toggle>
+		<mat-datetimepicker #dts type="datetime" [openOnFocus]=true [timeInterval]=5></mat-datetimepicker>
+	</mat-form-field>
+  <br>
+	<mat-form-field>
+		<mat-placeholder>End DateTime</mat-placeholder>
+		<mat-datetimepicker-toggle [for]="dte" matSuffix></mat-datetimepicker-toggle>
+		<mat-datetimepicker #dte type="datetime" [openOnFocus]=true [timeInterval]=5></mat-datetimepicker>
+		<input matInput formControlName="endDate" [matDatetimepicker]="dte" required autocomplete="false">
+	</mat-form-field>
+</form>

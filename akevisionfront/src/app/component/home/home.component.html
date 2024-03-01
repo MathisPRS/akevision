@@ -1,0 +1,16 @@
+<p>You're logged in with Angular</p>
+<h3>All registered users:</h3>
+<ul>
+    <li *ngFor="let user of users">
+        {{user.username}} ({{user.firsName}} {{user.lastName}})
+        - <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
+
+
+      <div>
+        <label>name:
+          <input [(ngModel)]="user.last_name" placeholder="name"/>
+        </label>
+        <pre>Model: {{ user | json }}</pre>
+      </div>
+    </li>
+</ul>
