@@ -54,12 +54,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'akevision_rest.apps.akevisionRestConfig',
     'rest_framework',
     'corsheaders',
     'django_filters',
-    'akevision'
-    
+    'akevision_rest'
 ]
 
 MIDDLEWARE = [
@@ -77,6 +75,17 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8000",
     "http://localhost:4200",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:4200",
+    
+    
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://localhost:4200",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:4200",
 ]
 
 ROOT_URLCONF = 'akevision.urls'
@@ -111,9 +120,9 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = 'akevision.wsgi.application'
+WSGI_APPLICATION = 'akevision.wsgi.application'
 ASGI_APPLICATION = 'akevision.asgi.application'
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

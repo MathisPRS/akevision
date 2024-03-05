@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
 
-
 def get_title(title):
     if "-preprod" in admin.site.site_url:
         return u'RECETTE ' + title
@@ -26,7 +25,7 @@ def get_title(title):
 
 
 admin.site.site_url = settings.SITE_URL
-admin.site.site_header = get_title("Administration de QUALIMS")
+admin.site.site_header = get_title("Administration de Akevision")
 admin.site.index_title = get_title("Administration des tables")
 
 urlpatterns = [

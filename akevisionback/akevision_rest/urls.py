@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework import routers
 
 from channels.routing import ProtocolTypeRouter
@@ -11,6 +11,10 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'manage-file', views.ManageFileViewSet, basename='manage-file')
 router.register(r'mail', views.MailViewset, basename='mail')
+router.register(r'compagnies', views.CompagnieViewSet)
+router.register(r'clients', views.ClientViewSet)
+
+print(router.urls)
 
 urlpatterns = [
     path("auth/", AuthAPIView.as_view(), name='test'),

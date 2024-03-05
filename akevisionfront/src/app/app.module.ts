@@ -22,6 +22,8 @@ import {APP_DATE_FORMATS, CustomDateAdapter}  from './helpers/custom-date-adapte
 import {MAT_DATETIME_FORMATS} from '@mat-datetimepicker/core';
 import { ImportComponent } from './component/import/import.component';
 import { DownloadComponent } from './component/download/download.component';
+import { ApiService } from './services/api.service';
+
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -53,6 +55,7 @@ registerLocaleData(localeFr, 'fr');
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     { provide: MAT_DATETIME_FORMATS, useValue: APP_DATE_FORMATS },
+    ApiService
   ],
   bootstrap: [AppComponent , LoginComponent ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

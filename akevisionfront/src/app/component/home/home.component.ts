@@ -1,50 +1,36 @@
-import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../services/user.service';
-import {AlertService} from '../../services/alert.service';
+import {Component   } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ApiService  } from '../../services/api.service';
+import { CompagnieService } from '../../services/compagnie.service';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  users = [];
 
-  constructor(
-    private userService: UserService,
-    private alertService: AlertService
-  ) {
-  }
+export class HomeComponent {
+  compagnie = {
+    name: ''
+  };
+  compagnieMessage = '';
+  
+  constructor(private compagnieService: CompagnieService) { }
 
-  ngOnInit() {
-    //this.loadAllUsers();
-  }
-
-  deleteUser(id: number) {
-    this.userService.delete(id)
-      .subscribe(() => {
-          console.log('deleteUser OK');
-          this.loadAllUsers();
-        },
-        error => {
-          this.alertService.error(error.error.message || error.statusText);
-          console.log('deleteUser error');
-        },
-        () => console.log('deleteUser complete'));
-  }
-
-  private loadAllUsers() {
-    // reset alerts on submit
-    this.alertService.clear();
-
-    this.userService.getAll()
-      .subscribe(users => {
-          console.log('loadAllUsers OK');
-          this.users = users;
-        }, error => {
-          this.alertService.error(error.error.message || error.statusText);
-          console.log('loadAllUsers error');
-        },
-        () => console.log('loadAllUsers complete'));
+  onSubmit() {
+    this.compagnieService.createCompagnie(this.compagnie).subscribe(
+      response => {
+        this.compagnieMessage = "La compagnie a été créé"
+    },
+      error => {
+        if (error.error && error.error.name) {
+          this.compagnieMessage = error.error.name[0];
+          
+        } else {
+          this.compagnieMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
+        }
+      }
+    );
   }
 }

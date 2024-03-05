@@ -19,16 +19,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  xit(`should have as title 'mdpqualitefront'`, () => {
+  xit(`should have as title 'akevisionfront'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('mdpqualitefront');
+    expect(app.title).toEqual('akevisionfront');
   });
 
   xit('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('mdpqualitefront app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('akevisionfront app is running!');
   });
 });

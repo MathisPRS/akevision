@@ -16,3 +16,5 @@ sqlparse
 urllib3
 pyexcel-io
 pyexcel-xlsx
+channels
+daphne

@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from rest_framework import serializers
+from .models import Compagnie
+from .models import Client
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +32,17 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         return user
 
+class CompagnieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Compagnie
+        fields = ['id', 'name']
+
+    def validate_name(self, value):
+        if Compagnie.objects.filter(name=value).exists():
+            raise serializers.ValidationError('La compagnie existe déjà')
+        return value
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ['id', 'name', 'compagnie', 'security_key']

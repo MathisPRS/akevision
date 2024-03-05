@@ -6,17 +6,24 @@ from rest_framework import viewsets, pagination, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
-
+from rest_framework import viewsets
+from django.utils.decorators import method_decorator
+from rest_framework import serializers
+from django.http import HttpResponse ,JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from .models import Compagnie, Client
+from .serializers import CompagnieSerializer, ClientSerializer, UserSerializer, GroupSerializer
 
 from .permissions import HasPermission
 from .service import send_mail_information
-from .serializers import UserSerializer, GroupSerializer
-
 from django.db import transaction
 
-# from .import_excel.import_excel import get_excel
 
+# from .import_excel.import_excel import get_excel
 logger = logging.getLogger()
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -36,7 +43,6 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [IsAuthenticated, HasPermission, ]
         return [permission() for permission in permission_classes]
-
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -58,7 +64,6 @@ class GroupViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated, HasPermission, ]
         return [permission() for permission in permission_classes]
 
-
 class ManageFileViewSet(viewsets.ViewSet):
     model = None
     registry = None
@@ -77,7 +82,6 @@ class ManageFileViewSet(viewsets.ViewSet):
     #         return Response(data=str(e),
     #                         status=status.HTTP_400_BAD_REQUEST)
 
-
 class MailViewset(viewsets.ViewSet):
     model = None
     registry = None
@@ -93,3 +97,28 @@ class MailViewset(viewsets.ViewSet):
             logger.error(str(e))
             return Response(data=str(e),
                             status=status.HTTP_400_BAD_REQUEST)
+        
+class CompagnieViewSet(viewsets.ModelViewSet):
+    queryset = Compagnie.objects.all()
+    serializer_class = CompagnieSerializer
+
+    def create_compagnie(request):
+        serializer = CompagnieSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'La compagnie a été créée avec succès'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'message': 'Entrée invalide', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+class ClientViewSet(viewsets.ModelViewSet):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+    @csrf_exempt
+    @require_POST
+    def create_client(request):
+        serializer = ClientSerializer(data=request.POST)
+        if serializer.is_valid():
+            client = serializer.save()
+            client.generate_script()
+            return JsonResponse({'client_id': client.id, 'security_key': client.security_key})
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
