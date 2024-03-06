@@ -1,8 +1,1 @@
-<form (submit)="onSubmit()">
-  <div class="form-group">
-    <label for="name">Nom de la compagnie</label>
-    <input type="text" class="form-control" id="name" [(ngModel)]="compagnie.name" name="name" required>
-    <small class="text-danger" *ngIf="compagnieMessage">{{ compagnieMessage }}</small>
-  </div>
-  <button type="submit" class="btn btn-primary">Créer</button>
-</form>
+<button mat-raised-button (click)="openDialog()">Créer une compagnie</button>

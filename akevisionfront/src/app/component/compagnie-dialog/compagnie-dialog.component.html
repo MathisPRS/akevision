@@ -1,0 +1,19 @@
+<form [formGroup]="compagnieForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Nom de la compagnie</mat-label>
+    <input formControlName="nameCompagnie" matInput>
+    <mat-error *ngIf="compagnieForm.get('nameCompagnie').hasError('required')">
+      Veuillez entrer un nom de compagnie.
+    </mat-error>
+    <mat-error *ngIf="compagnieForm.get('nameCompagnie').hasError('compagnieExistante')">
+      {{ compagnieMessage }}
+    </mat-error>
+    <mat-error *ngIf="compagnieForm.get('nameCompagnie').hasError('unknownError')">
+      {{ compagnieMessage }}
+    </mat-error>
+  </mat-form-field>
+  <div class="button-row">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button type="submit" [disabled]="compagnieForm.invalid">Créer</button>
+  </div>
+</form>

@@ -23,6 +23,8 @@ import {MAT_DATETIME_FORMATS} from '@mat-datetimepicker/core';
 import { ImportComponent } from './component/import/import.component';
 import { DownloadComponent } from './component/download/download.component';
 import { ApiService } from './services/api.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CompagnieDialogComponent } from './component/compagnie-dialog/compagnie-dialog.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -37,6 +39,7 @@ registerLocaleData(localeFr, 'fr');
     TestMatMaterialComponent,
     ImportComponent,
     DownloadComponent,
+    CompagnieDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ registerLocaleData(localeFr, 'fr');
     BrowserAnimationsModule,
     MaterialModule,
     MatNativeDatetimeModule,
-    MatDatetimepickerModule
+    MatDatetimepickerModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
