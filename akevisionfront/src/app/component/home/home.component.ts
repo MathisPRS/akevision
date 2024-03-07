@@ -14,8 +14,8 @@ export class HomeComponent {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(CompagnieDialogComponent, {
-      width: '400px',
-      height :'400px'
+      width: '350px',
+      height :'220px'
       
     });
 

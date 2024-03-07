@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-compagnie-dialog',
   templateUrl: './compagnie-dialog.component.html',
+  styleUrls: ['./compagnie-dialog.component.scss']
 })
 export class CompagnieDialogComponent {
   compagnieForm = new FormGroup({

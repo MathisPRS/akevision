@@ -25,6 +25,7 @@ import { DownloadComponent } from './component/download/download.component';
 import { ApiService } from './services/api.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CompagnieDialogComponent } from './component/compagnie-dialog/compagnie-dialog.component';
+import { ClientDialogComponent } from './client-dialog/client-dialog.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -40,6 +41,7 @@ registerLocaleData(localeFr, 'fr');
     ImportComponent,
     DownloadComponent,
     CompagnieDialogComponent,
+    ClientDialogComponent,
   ],
   imports: [
     BrowserModule,
