@@ -1,5 +1,6 @@
 import logging
-
+import random
+import string
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, pagination, status
@@ -97,10 +98,15 @@ class MailViewset(viewsets.ViewSet):
             logger.error(str(e))
             return Response(data=str(e),
                             status=status.HTTP_400_BAD_REQUEST)
-        
+           
 class CompagnieViewSet(viewsets.ModelViewSet):
     queryset = Compagnie.objects.all()
     serializer_class = CompagnieSerializer
+
+    def list(self, request):
+        compagnies = Compagnie.objects.all()
+        serializer = CompagnieSerializer(compagnies, many=True)
+        return Response(serializer.data)
 
     def create_compagnie(request):
         serializer = CompagnieSerializer(data=request.data)
@@ -110,15 +116,15 @@ class CompagnieViewSet(viewsets.ModelViewSet):
         else:
             return Response({'message': 'Entrée invalide', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
+
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    @csrf_exempt
-    @require_POST
+
     def create_client(request):
-        serializer = ClientSerializer(data=request.POST)
+        serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
-            client = serializer.save()
-            client.generate_script()
-            return JsonResponse({'client_id': client.id, 'security_key': client.security_key})
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.create
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

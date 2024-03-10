@@ -1,1 +1,28 @@
-<p>client-dialog works!</p>
+<h1 mat-dialog-title>Ajouter un client</h1>
+<div mat-dialog-content>
+  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Nom du client</mat-label>
+      <input formControlName="nomClient" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Type de client</mat-label>
+      <mat-select formControlName="typeClient">
+        <mat-option value="Linux">Linux</mat-option>
+        <mat-option value="Windows">Windows</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Compagnie</mat-label>
+      <mat-select formControlName="compagnie">
+        <mat-option *ngFor="let compagnie of compagnies" [value]="compagnie.id">
+          {{ compagnie.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Annuler</button>
+      <button mat-button type="submit" [disabled]="clientForm.invalid">Ajouter</button>
+    </div>
+  </form>
+</div>

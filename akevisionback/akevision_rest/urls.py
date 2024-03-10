@@ -14,8 +14,6 @@ router.register(r'mail', views.MailViewset, basename='mail')
 router.register(r'compagnies', views.CompagnieViewSet)
 router.register(r'clients', views.ClientViewSet)
 
-print(router.urls)
-
 urlpatterns = [
     path("auth/", AuthAPIView.as_view(), name='test'),
 ]

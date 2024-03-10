@@ -14,4 +14,8 @@ export class CompagnieService {
     const body = { name }; // encapsuler les données de la forme dans un objet JSON avec la propriété name
     return this.apiService.post('/compagnies/', body);
   }
+
+  getAllCompagnies(): Observable<any> {
+    return this.apiService.get('/compagnies/');
+  }
 }

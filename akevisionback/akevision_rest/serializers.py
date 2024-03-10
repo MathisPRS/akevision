@@ -1,3 +1,5 @@
+import random
+import string
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from rest_framework import serializers
@@ -43,6 +45,38 @@ class CompagnieSerializer(serializers.ModelSerializer):
         return value
 
 class ClientSerializer(serializers.ModelSerializer):
+    compagnie_id = serializers.PrimaryKeyRelatedField(queryset=Compagnie.objects.all(), source='compagnie')
+
     class Meta:
         model = Client
-        fields = ['id', 'name', 'compagnie', 'security_key']
+        fields = ['id', 'name','compagnie_id', 'os']
+   
+    def validate_name(self, value):
+        print(value)
+        if Client.objects.filter(name=value).exists():
+            raise serializers.ValidationError('Un Client du meme nom existe déjà')
+        return value
+    
+    def validate_compagnie_id(self, value):
+        if not isinstance(value, int):
+            value = value.id
+        if not Compagnie.objects.filter(id=value).exists():
+            raise serializers.ValidationError('La compagnie n\'existe pas')
+        return value
+    
+    def validate_os(self, value):
+        return value
+    
+    def create(self, validated_data):
+        compagnie_id = validated_data['compagnie']
+        compagnie = Compagnie.objects.get(id=compagnie_id)
+        client = Client.objects.create(
+            name=validated_data['name'],
+            compagnie=compagnie,
+            os=validated_data['os']
+        )
+        return client
+    
+    # def validate_security_key(self, value):
+    #     print(value)
+    #     return value
