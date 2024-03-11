@@ -1,3 +1,4 @@
+from ipaddress import ip_address
 import random
 import string
 from django.contrib.auth.models import User, Group
@@ -49,10 +50,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['id', 'name','compagnie_id', 'os']
+        fields = ['id', 'name','compagnie_id', 'os','ipv4']
    
     def validate_name(self, value):
-        print(value)
         if Client.objects.filter(name=value).exists():
             raise serializers.ValidationError('Un Client du meme nom existe déjà')
         return value
@@ -64,16 +64,22 @@ class ClientSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('La compagnie n\'existe pas')
         return value
     
-    def validate_os(self, value):
+    def validate_ipv4(self, value):
+        try:
+            ip_address(value)
+        except ValueError:
+            raise serializers.ValidationError('La valeur n\'est pas une adresse IPv4 valide')
         return value
     
+
     def create(self, validated_data):
         compagnie_id = validated_data['compagnie']
         compagnie = Compagnie.objects.get(id=compagnie_id)
         client = Client.objects.create(
             name=validated_data['name'],
             compagnie=compagnie,
-            os=validated_data['os']
+            os=validated_data['os'],
+            ipv4=validated_data['ipv4']
         )
         return client
     

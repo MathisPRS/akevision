@@ -14,7 +14,8 @@ export class ClientService {
     return this.apiService.post('/clients/', {
       name: client.name,
       os: client.os,
-      compagnie_id: client.compagnie_id // modifié ici
+      compagnie_id: client.compagnie_id,
+      ipv4: client.ipv4
     });
   }
 }

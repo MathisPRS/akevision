@@ -17,4 +17,6 @@ urllib3
 pyexcel-io
 pyexcel-xlsx
 channels
+channels_redis
 daphne
+djangorestframework_simplejwt
