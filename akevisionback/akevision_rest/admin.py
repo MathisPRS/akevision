@@ -1,5 +1,4 @@
 from django.contrib import admin
-from rest_framework.authtoken.models import Token
 from .models import Compagnie
 from .models import Client
 

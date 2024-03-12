@@ -18,4 +18,9 @@ export class ClientService {
       ipv4: client.ipv4
     });
   }
+
+  getScriptClient(id_client : number ): Observable<any> { 
+    
+    return this.apiService.get('/clients/'+id_client+'/download-script');
+    }
 }

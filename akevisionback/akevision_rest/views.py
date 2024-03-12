@@ -124,7 +124,16 @@ class ClientViewSet(viewsets.ModelViewSet):
     def create_client(request):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.create
+            serializer.create()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'], url_path='(?P<client_id>[^/.]+)/download-script')
+    def download_script(self, request, client_id=None):
+        
+        script_content = f"#!/bin/bash\n\nCLIENT_ID='{client_id}'"
+        response = HttpResponse(script_content, content_type='application/x-sh')
+        response['Content-Disposition'] = f'attachment; filename="client_script_{client_id}.sh"'
+        return response
+    

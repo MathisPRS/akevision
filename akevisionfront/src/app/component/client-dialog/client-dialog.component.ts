@@ -34,10 +34,15 @@ export class ClientDialogComponent {
       compagnie_id: this.clientForm.value.compagnie,
       ipv4: this.clientForm.value.ipv4
     };
-    console.log(client)
     this.clientService.createClient(client).subscribe(
       response => {
-        console.log("le front envoie :" +response);
+        console.log(response);
+        this.clientService.getScriptClient(response.id).subscribe(
+          response2 => {
+            console.log(response2);
+          }
+        );
+        
         this.dialogRef.close();
       },
       error => {
