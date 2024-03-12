@@ -1,6 +1,6 @@
 from django.db import models
-import random
-import string
+from rest_framework.authtoken.models import Token
+import uuid
 
 class Compagnie(models.Model):
     name = models.CharField(max_length=100)
@@ -17,6 +17,7 @@ class Client(models.Model):
     ]
     os = models.CharField(max_length=10, choices=OS_CHOICES, null=True, blank=True)
     ipv4 = models.CharField(max_length=255,null=True, blank=True)
+    auth_token = models.OneToOneField(Token, on_delete=models.CASCADE, null=True, blank=True, related_name='client')
 
     def __str__(self):
         return self.name
