@@ -1,11 +1,9 @@
 from ipaddress import ip_address
-import random
-import string
 from django.contrib.auth.models import User, Group
-from rest_framework import serializers
 from rest_framework import serializers
 from .models import Compagnie
 from .models import Client
+from .service import TokenService
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,7 +48,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['id', 'name','compagnie_id', 'os','ipv4']
+        fields = ['id', 'name','compagnie_id', 'os','ipv4', 'token']
    
     def validate_name(self, value):
         if Client.objects.filter(name=value).exists():
@@ -71,7 +69,6 @@ class ClientSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('La valeur n\'est pas une adresse IPv4 valide')
         return value
     
-
     def create(self, validated_data):
         compagnie_id = validated_data['compagnie']
         compagnie = Compagnie.objects.get(id=compagnie_id)
@@ -81,7 +78,10 @@ class ClientSerializer(serializers.ModelSerializer):
             os=validated_data['os'],
             ipv4=validated_data['ipv4']
         )
+        client.token=TokenService.generate_token(client.id)
+        client.save()
         return client
+    
     
     # def validate_security_key(self, value):
     #     print(value)

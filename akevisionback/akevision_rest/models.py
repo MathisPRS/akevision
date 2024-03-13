@@ -17,7 +17,7 @@ class Client(models.Model):
     ]
     os = models.CharField(max_length=10, choices=OS_CHOICES, null=True, blank=True)
     ipv4 = models.CharField(max_length=255,null=True, blank=True)
-    auth_token = models.OneToOneField(Token, on_delete=models.CASCADE, null=True, blank=True, related_name='client')
+    token = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.name

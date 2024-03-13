@@ -20,3 +20,4 @@ channels
 channels_redis
 daphne
 djangorestframework_simplejwt
+rest_framework_simplejwt
