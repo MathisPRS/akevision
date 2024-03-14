@@ -3,7 +3,7 @@ from .mailing.email_factory import create_email
 import jwt, uuid
 from jose import jwt as jose_jwt
 from akevision import settings
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from .models import RefreshToken, AccessToken, Client
 
 def send_mail_information():
@@ -61,3 +61,15 @@ class TokenService:
             return refresh_token_obj.client
         except RefreshToken.DoesNotExist:
             raise Exception('Le jeton de rafraîchissement est invalide ou a expiré')
+        
+    @staticmethod
+    def get_client_from_access_token(access_token):
+        try:
+            token = AccessToken.objects.get(access_token=access_token, expired=False)
+            if token.created_at < timezone.now() - timedelta(days=1):
+                token.expired = True
+                token.save()
+                raise TokenService.InvalidTokenError('Access token expiré')
+            return token.client_acces_token
+        except AccessToken.DoesNotExist:
+            raise TokenService.InvalidTokenError('Access token invalide')

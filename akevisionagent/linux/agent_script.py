@@ -29,5 +29,22 @@ async def main():
             # Attendre 5 secondes avant d'envoyer les données suivantes
             await asyncio.sleep(5)
 
+# Fonction pour mettre à jour le token dans le fichier de configuration
+def update_token(new_token):
+    with open('config.json', 'w') as f:
+        config['token'] = new_token
+        json.dump(config, f)
+
 # Exécuter la fonction principale
-asyncio.run(main())
+try:
+    asyncio.run(main())
+except websockets.exceptions.ConnectionClosedError as e:
+    # Vérifier si le serveur a fermé la connexion en raison d'un token expiré
+    if e.code == 1008:
+        # Appeler une fonction pour obtenir un nouveau token et mettre à jour le fichier de configuration
+        new_token = get_new_token()
+        update_token(new_token)
+        # Réessayer de se connecter au serveur avec le nouveau token
+        asyncio.run(main())
+    else:
+        print(f'Erreur de connexion : {e}')

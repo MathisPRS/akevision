@@ -84,8 +84,3 @@ class ClientSerializer(serializers.ModelSerializer):
         TokenService.generate_access_token(client)
 
         return client
-    
-    
-    # def validate_security_key(self, value):
-    #     print(value)
-    #     return value
