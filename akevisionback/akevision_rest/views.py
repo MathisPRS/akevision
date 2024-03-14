@@ -124,10 +124,12 @@ class ClientViewSet(viewsets.ModelViewSet):
     def create_client(request):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
+            
             serializer.create()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            print("test")
+            return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     # @action(detail=False, methods=['get'], url_path='(?P<client_id>[^/.]+)/download-script')
     # def download_script(self, request, client_id=None):

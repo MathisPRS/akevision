@@ -1,9 +1,10 @@
 from django.conf import settings
 from .mailing.email_factory import create_email
-import jwt
+import jwt, uuid
+from jose import jwt as jose_jwt
 from akevision import settings
 from datetime import datetime, timedelta
-from .models import Client
+from .models import RefreshToken, AccessToken, Client
 
 def send_mail_information():
     mail_param_dict = {}
@@ -15,20 +16,35 @@ def send_mail_information():
     mail_to_send.send(fail_silently=False)
 
 class TokenService:
-    def generate_token(client_id):
+    @staticmethod
+    def generate_access_token(client):
         expiration_time = datetime.utcnow() + timedelta(minutes=30)
         payload = {
-            'client_id': client_id,
-             'exp': int(expiration_time.timestamp()),
+            'client_id': client.id,
+            'exp': int(expiration_time.timestamp()),
         }
-        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-        return token
-    
+        
+        access_token= AccessToken.objects.create(
+            access_token= jose_jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256'),
+            created_at=datetime.now(),
+            expired=False,
+            client_acces_token = client,
+        )
+        
+
+        return access_token
+
     @staticmethod
-    def decode_token(token):
+    def generate_refresh_token(client):
+        refresh_token = uuid.uuid4().hex
+        RefreshToken.objects.create(token=refresh_token, client=client)
+        return refresh_token
+
+    @staticmethod
+    def validate_access_token(access_token):
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-            # vérifier que le token n'a pas expiré
+            payload = jose_jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+            # Vérifier que le token n'a pas expiré
             expiration_time = datetime.utcfromtimestamp(payload['exp'])
             if expiration_time < datetime.utcnow():
                 raise Exception('Le token a expiré')
@@ -37,8 +53,11 @@ class TokenService:
             raise Exception('Le token a expiré')
         except jwt.InvalidTokenError:
             raise Exception('Le token est invalide')
-        
-    # def get_client_token(client_id):
-    #     client = Client.objects.get(id=client_id)
-    #     print(client.token)
-    #     return client.token
+
+    @staticmethod
+    def validate_refresh_token(refresh_token):
+        try:
+            refresh_token_obj = RefreshToken.objects.get(token=refresh_token, expired=False)
+            return refresh_token_obj.client
+        except RefreshToken.DoesNotExist:
+            raise Exception('Le jeton de rafraîchissement est invalide ou a expiré')
