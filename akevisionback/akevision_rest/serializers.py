@@ -1,11 +1,11 @@
 from ipaddress import ip_address
-import random
-import string
 from django.contrib.auth.models import User, Group
-from rest_framework import serializers
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 from .models import Compagnie
 from .models import Client
+from .service import TokenService
+from django.http import HttpResponseServerError
+
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,28 +50,28 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['id', 'name','compagnie_id', 'os','ipv4']
+        fields = ['id', 'name', 'compagnie_id', 'os', 'ipv4']
    
     def validate_name(self, value):
-        if Client.objects.filter(name=value).exists():
-            raise serializers.ValidationError('Un Client du meme nom existe déjà')
+        compagnie_id = self.initial_data.get('compagnie_id')
+        if Client.objects.filter(name=value, compagnie_id=compagnie_id).exists():
+            raise HttpResponseServerError('Un client du même nom existe déjà dans cette compagnie')
         return value
     
     def validate_compagnie_id(self, value):
         if not isinstance(value, int):
             value = value.id
         if not Compagnie.objects.filter(id=value).exists():
-            raise serializers.ValidationError('La compagnie n\'existe pas')
+            raise HttpResponseServerError('La compagnie n\'existe pas')
         return value
     
     def validate_ipv4(self, value):
         try:
             ip_address(value)
         except ValueError:
-            raise serializers.ValidationError('La valeur n\'est pas une adresse IPv4 valide')
+            raise HttpResponseServerError('La valeur n\'est pas une adresse IPv4 valide')
         return value
     
-
     def create(self, validated_data):
         compagnie_id = validated_data['compagnie']
         compagnie = Compagnie.objects.get(id=compagnie_id)
@@ -81,7 +81,10 @@ class ClientSerializer(serializers.ModelSerializer):
             os=validated_data['os'],
             ipv4=validated_data['ipv4']
         )
+        TokenService.generate_access_token(client)
+
         return client
+    
     
     # def validate_security_key(self, value):
     #     print(value)
