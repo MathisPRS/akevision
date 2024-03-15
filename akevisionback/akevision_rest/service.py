@@ -18,7 +18,7 @@ def send_mail_information():
 class TokenService:
     @staticmethod
     def generate_access_token(client):
-        expiration_time = datetime.utcnow() + timedelta(minutes=30)
+        expiration_time = datetime.now() + timedelta(days=1)
         payload = {
             'client_id': client.id,
             'exp': int(expiration_time.timestamp()),
@@ -30,10 +30,21 @@ class TokenService:
             expired=False,
             client_acces_token = client,
         )
-        
-
         return access_token
+    
+    @staticmethod
+    def decode_access_token(access_token):
+        try:
+            payload = jose_jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+            client_id = payload.get('client_id')
+            expiration_time = datetime.fromtimestamp(payload.get('exp'))
+            if datetime.now() > expiration_time:
+                raise Exception('Access token expired')
+            return client_id
+        except Exception as e:
+            raise Exception('Invalid access token')
 
+    
     @staticmethod
     def generate_refresh_token(client):
         refresh_token = uuid.uuid4().hex
@@ -45,8 +56,8 @@ class TokenService:
         try:
             payload = jose_jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
             # Vérifier que le token n'a pas expiré
-            expiration_time = datetime.utcfromtimestamp(payload['exp'])
-            if expiration_time < datetime.utcnow():
+            expiration_time = datetime.fromtimestamp(payload['exp'])
+            if expiration_time < datetime.now():
                 raise Exception('Le token a expiré')
             return payload
         except jwt.ExpiredSignatureError:
@@ -69,7 +80,7 @@ class TokenService:
             if token.created_at < timezone.now() - timedelta(days=1):
                 token.expired = True
                 token.save()
-                raise TokenService.InvalidTokenError('Access token expiré')
+                raise jwt.InvalidTokenError('Access token expiré')
             return token.client_acces_token
         except AccessToken.DoesNotExist:
-            raise TokenService.InvalidTokenError('Access token invalide')
+            raise jwt.InvalidTokenError('Access token invalide')
