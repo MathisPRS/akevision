@@ -5,6 +5,7 @@
 
 #Partie back
 /akevisionback/log/
+/akevisionback/static/
 /akevisionback/node_modules/
 /akevisionback/__pycache__
 /akevisionback/akevision/__pycache__
