@@ -5,6 +5,7 @@ from jose import jwt as jose_jwt
 from akevision import settings
 from datetime import datetime, timedelta, timezone
 from .models import RefreshToken, AccessToken, Client
+from django.utils.timezone import make_aware
 
 def send_mail_information():
     mail_param_dict = {}
@@ -18,10 +19,9 @@ def send_mail_information():
 class TokenService:
     @staticmethod
     def generate_access_token(client):
-        expiration_time = datetime.now() + timedelta(days=1)
         payload = {
             'client_id': client.id,
-            'exp': int(expiration_time.timestamp()),
+            'ip_address': client.ipv4,
         }
         
         access_token= AccessToken.objects.create(
@@ -33,54 +33,79 @@ class TokenService:
         return access_token
     
     @staticmethod
-    def decode_access_token(access_token):
+    def decode_access_token(token):
         try:
-            payload = jose_jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            client_id = payload.get('client_id')
-            expiration_time = datetime.fromtimestamp(payload.get('exp'))
-            if datetime.now() > expiration_time:
-                raise Exception('Access token expired')
-            return client_id
-        except Exception as e:
-            raise Exception('Invalid access token')
-
-    
-    @staticmethod
-    def generate_refresh_token(client):
-        refresh_token = uuid.uuid4().hex
-        RefreshToken.objects.create(token=refresh_token, client=client)
-        return refresh_token
-
-    @staticmethod
-    def validate_access_token(access_token):
-        try:
-            payload = jose_jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            # Vérifier que le token n'a pas expiré
-            expiration_time = datetime.fromtimestamp(payload['exp'])
-            if expiration_time < datetime.now():
-                raise Exception('Le token a expiré')
+            # Décoder le jeton avec la clé secrète
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            
             return payload
         except jwt.ExpiredSignatureError:
-            raise Exception('Le token a expiré')
-        except jwt.InvalidTokenError:
-            raise Exception('Le token est invalide')
+            raise Exception('Le jeton a expiré')
+        except jwt.DecodeError:
+            raise Exception('Signature invalide')
+    
 
     @staticmethod
-    def validate_refresh_token(refresh_token):
+    def get_access_token(token):
         try:
-            refresh_token_obj = RefreshToken.objects.get(token=refresh_token, expired=False)
-            return refresh_token_obj.client
-        except RefreshToken.DoesNotExist:
-            raise Exception('Le jeton de rafraîchissement est invalide ou a expiré')
+            # vérification que le token existe en base
+            access_token = AccessToken.objects.get(access_token=token, expired=False)
+            print('get_access_token' , access_token.created_at )
+
+            #created_at_aware = make_aware(access_token.created_at)
+
+            # vérification que le token ne soit pas exipré
+            if access_token.created_at < datetime.now(timezone.utc) - timedelta(days=5):
+                access_token.expired = True
+                access_token.save()
+                raise jwt.InvalidTokenError('Access token expiré')
+            return access_token
+        except AccessToken.DoesNotExist:
+            raise Exception('Le jeton n\'existe pas dans la base de données')
+        
+    
+    @staticmethod
+    def is_token_linked_to_client(token, client_id):
+        try:
+            client = Client.objects.get(id=client_id)
+            access_token = AccessToken.objects.get(client_acces_token=client)
+            if token != access_token :
+                raise Exception('Le Token n\'est pas lié avec le bon client')
+            return access_token
+                
+        except AccessToken.DoesNotExist:
+            raise Exception('Il n\'existe pas de token dans la base pour le client demandé')
+        except Client.DoesNotExist:
+             raise Exception('Le client n\'existe pas')
+
         
     @staticmethod
-    def get_client_from_access_token(access_token):
+    def validate_access_token(token, url_client, ip_address):
         try:
-            token = AccessToken.objects.get(access_token=access_token, expired=False)
-            if token.created_at < timezone.now() - timedelta(days=1):
-                token.expired = True
-                token.save()
-                raise jwt.InvalidTokenError('Access token expiré')
-            return token.client_acces_token
-        except AccessToken.DoesNotExist:
-            raise jwt.InvalidTokenError('Access token invalide')
+            # Vérifier que le token n'a pas expiré
+            payload = TokenService.decode_access_token(token)
+            print('validate_access_token ', payload)
+            client_id = payload['client_id']
+
+            print('validate_access_token ', client_id)
+            client = Client.objects.get(id=client_id) 
+
+            # Vérifier que l'id pu payload egale a celui de l'url
+            if client_id != url_client :
+                raise Exception('L\'id client du payload et de l\'url sont différent')
+            
+            # Vérifier que le token est bon
+            acces_token = TokenService.get_access_token(token)
+            print('validate_access_token ', acces_token)
+            TokenService.is_token_linked_to_client(acces_token, client_id)
+
+              
+
+            # Vérifier que l'IP de la base client egale a celui de l'url
+            print('validate_access_token ', client.ipv4)
+            print('validate_access_token ', ip_address)
+            if client.ipv4  != ip_address :
+                raise Exception('L\'adresse IP du payload et de la requête sont différentes')
+            
+        except jwt.InvalidTokenError:
+            raise Exception('Le token est invalide')
