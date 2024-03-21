@@ -4,9 +4,9 @@ import json
 import time
 
 async def connect_to_server():
-    pc_id = 1  # Remplacez cela par la logique pour obtenir ou générer l'ID du PC
+    pc_id = 2  # Remplacez cela par la logique pour obtenir ou générer l'ID du PC
     uri = f"ws://localhost:8000/ws/client/{pc_id}/"
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjEsImlwX2FkZHJlc3MiOiIxMjcuMC4wLjIifQ.UYPkz8qKgOvKwEXZlXMzlQKhqng5F-7o1aulMsWgPUQ'
+    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjIsImlwX2FkZHJlc3MiOiIxMjcuMC4wLjEifQ.V3xpwZxyvMjlhp_po-dJ2sdqmMR7qRMjLRn_gZ0PK6k'
 
     # token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjQsImV4cCI6MTcxMTEwMjYyMX0.TAXEoZjRqRPr7f29lmxr_fBPMEV6GZfwa89qdA2fn14'
 

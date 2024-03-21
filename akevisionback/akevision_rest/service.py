@@ -88,24 +88,23 @@ class TokenService:
             client_id = payload['client_id']
 
             print('validate_access_token ', client_id)
-            client = Client.objects.get(id=client_id) 
 
-            # Vérifier que l'id pu payload egale a celui de l'url
-            if client_id != url_client :
-                raise Exception('L\'id client du payload et de l\'url sont différent')
-            
+            # Vérifier que l'id du payload est le même que celui de l'url
+            if client_id != url_client:
+                raise Exception('L\'id client du payload et de l\'url sont différents')
+
             # Vérifier que le token est bon
             acces_token = TokenService.get_access_token(token)
             print('validate_access_token ', acces_token)
-            TokenService.is_token_linked_to_client(acces_token, client_id)
+            client = acces_token.client_acces_token
 
-              
-
-            # Vérifier que l'IP de la base client egale a celui de l'url
-            print('validate_access_token ', client.ipv4)
-            print('validate_access_token ', ip_address)
-            if client.ipv4  != ip_address :
+            # Vérifier que l'IP de la base client est la même que celle de l'url
+            if client.ipv4 != ip_address:
                 raise Exception('L\'adresse IP du payload et de la requête sont différentes')
-            
+
         except jwt.InvalidTokenError:
             raise Exception('Le token est invalide')
+        except Client.DoesNotExist:
+            raise Exception('Le client n\'existe pas')
+        except Exception as e:
+            raise Exception(str(e))

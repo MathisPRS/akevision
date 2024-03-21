@@ -26,11 +26,6 @@ class ClientWebsocketConsumer(AsyncWebsocketConsumer):
             await validate_access_token_async(token, client_id, self.scope['client'][0])
             await self.accept()
 
-        except Client.DoesNotExist:
-            print(f"Le client {client_id} n'existe pas en base de données")
-            await self.close()
-            return
-
         except Exception as e:
             print(e)
             await self.close()
