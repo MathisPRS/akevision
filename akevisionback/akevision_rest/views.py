@@ -128,7 +128,6 @@ class ClientViewSet(viewsets.ModelViewSet):
             serializer.create()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print("test")
             return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     # @action(detail=False, methods=['get'], url_path='(?P<client_id>[^/.]+)/download-script')

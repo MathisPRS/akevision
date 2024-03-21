@@ -57,8 +57,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_filters',
-    'akevision_rest'
+    'akevision_rest',
 ]
+
+ASGI_APPLICATION = 'akevision.asgi.application'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,7 +124,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'akevision.wsgi.application'
-ASGI_APPLICATION = 'akevision.asgi.application'
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Database

@@ -1,33 +1,28 @@
+import asyncio
 import websockets
 import json
-import asyncio
 import time
 
-# Charger les variables de configuration à partir d'un fichier
-with open('config.json') as f:
-    config = json.load(f)
+async def connect_to_server():
+    pc_id = 4  # Remplacez cela par la logique pour obtenir ou générer l'ID du PC
+    uri = f"ws://localhost:8000/ws/client/{pc_id}/"
+    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjQsImV4cCI6MTcxMTEwMjYyMX0.TAXEoZjRqRPr7f29lmxr_fBPMEV6GZfwa89qdA2fn14'
 
-# Définir l'URL de la connexion WebSocket avec le token dans l'URL
-url = f'ws://{config["server_url"]}/ws/client/{config["client_id"]}/{config["token"]}/'
+    # Ajoutez l'en-tête d'authentification
+    headers = {
+        "Authorization": token
+    }
 
-# Définir les données à envoyer au serveur
-data = {
-    'data': 'Hello, server!'
-}
-
-# Fonction pour envoyer les données au serveur via WebSocket
-async def send_data(websocket):
-    await websocket.send(json.dumps(data))
-    response = await websocket.recv()
-    print(f'Réponse du serveur : {response}')
-
-# Fonction pour établir la connexion WebSocket et envoyer les données
-async def main():
-    async with websockets.connect(url) as websocket:
+    async with websockets.connect(uri, extra_headers=headers) as websocket:
         while True:
-            await send_data(websocket)
-            # Attendre 5 secondes avant d'envoyer les données suivantes
+            message = {'ram' : 60, 'cpu' : 20, 'test' : 'test'}
+            await websocket.send(json.dumps(message))
+
+            response = await websocket.recv()
+            print(f"Received from server: {response}")
+
+            # Pause de 2 secondes avant d'envoyer la prochaine mise à jour
             await asyncio.sleep(5)
 
-# Exécuter la fonction principale
-asyncio.run(main())
+# Appel de la fonction pour établir la connexion
+asyncio.get_event_loop().run_until_complete(connect_to_server())

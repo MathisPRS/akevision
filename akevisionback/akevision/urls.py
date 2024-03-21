@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
+from django.conf.urls.static import static
 
 def get_title(title):
     if "-preprod" in admin.site.site_url:
@@ -32,4 +33,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('akevision_rest/', include('akevision_rest.urls'), name='akevision_rest'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
