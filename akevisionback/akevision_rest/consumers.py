@@ -20,10 +20,10 @@ class ClientWebsocketConsumer(AsyncWebsocketConsumer):
             return
 
         validate_access_token_async = sync_to_async(TokenService.validate_access_token)
-
+        ipv4_requete = self.scope['client'][0]
         # Vérifier le jeton d'authentification
         try:
-            await validate_access_token_async(token, client_id, self.scope['client'][0])
+            await validate_access_token_async(token, client_id, ipv4_requete)
             await self.accept()
 
         except Exception as e:

@@ -1,14 +1,20 @@
 import asyncio
 import websockets
 import json
-import time
+import os, time
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(BASE_DIR, "config.json")
+
 
 async def connect_to_server():
-    pc_id = 1  # Remplacez cela par la logique pour obtenir ou générer l'ID du PC
-    uri = f"ws://localhost:8000/ws/client/{pc_id}/"
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjEsImlwX2FkZHJlc3MiOiIxMjcuMC4wLjIifQ.UYPkz8qKgOvKwEXZlXMzlQKhqng5F-7o1aulMsWgPUQ'
+    with open(config_path) as f:
+        config = json.load(f)
 
-    # token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjQsImV4cCI6MTcxMTEwMjYyMX0.TAXEoZjRqRPr7f29lmxr_fBPMEV6GZfwa89qdA2fn14'
+    pc_id = config["client_id"]
+    server_url = config["server_url"]
+    uri = f"ws://{server_url}/ws/client/{pc_id}/"
+    token = config["token"]
 
     # Ajoutez l'en-tête d'authentification
     headers = {

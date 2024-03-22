@@ -1,11 +1,13 @@
+import zipfile
 from django.conf import settings
 from .mailing.email_factory import create_email
-import jwt, uuid
+import os, jwt, json ,uuid
 from jose import jwt as jose_jwt
 from akevision import settings
 from datetime import datetime, timedelta, timezone
 from .models import RefreshToken, AccessToken, Client
 from django.utils.timezone import make_aware
+from django.conf import settings
 
 def send_mail_information():
     mail_param_dict = {}
@@ -75,8 +77,6 @@ class TokenService:
                 
         except AccessToken.DoesNotExist:
             raise Exception('Il n\'existe pas de token dans la base pour le client demandé')
-        except Client.DoesNotExist:
-             raise Exception('Le client n\'existe pas')
 
         
     @staticmethod
@@ -84,10 +84,7 @@ class TokenService:
         try:
             # Vérifier que le token n'a pas expiré
             payload = TokenService.decode_access_token(token)
-            print('validate_access_token ', payload)
             client_id = payload['client_id']
-
-            print('validate_access_token ', client_id)
 
             # Vérifier que l'id du payload est le même que celui de l'url
             if client_id != url_client:
@@ -95,7 +92,6 @@ class TokenService:
 
             # Vérifier que le token est bon
             acces_token = TokenService.get_access_token(token)
-            print('validate_access_token ', acces_token)
             client = acces_token.client_acces_token
 
             # Vérifier que l'IP de la base client est la même que celle de l'url
@@ -108,3 +104,26 @@ class TokenService:
             raise Exception('Le client n\'existe pas')
         except Exception as e:
             raise Exception(str(e))
+        
+
+
+class ClientFileService :
+    @staticmethod
+    def create_client_files(client_id, token):
+        agent_script_path = os.path.join(os.path.dirname(__file__), 'agent_script.py')
+
+        server_url = settings.SERVER_URL
+        print(server_url)
+        # Créer le fichier config.json
+        config = {
+            "server_url": server_url,
+            "client_id": client_id,
+            "token": token
+        }
+        config_json = json.dumps(config)
+
+        with zipfile.ZipFile('client_files.zip', 'w') as zipf:
+            zipf.write(agent_script_path, os.path.basename(agent_script_path))
+            # Ajout du fichier config.json
+            zipf.writestr('config.json', config_json)
+            # Créer le fichier agent_script.py

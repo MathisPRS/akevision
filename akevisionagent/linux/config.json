@@ -1,5 +1,5 @@
 {
     "server_url": "localhost:8000",
-    "client_id": 2,
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjIsImV4cCI6MTcxMDU5OTQwNH0.HWRDMMXZWvq5MLcXQDHwNtUsCRVCAjuCdJECtN_Q99k"
+    "client_id": 4,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjQsImV4cCI6MTcxMTEwMjYyMX0.TAXEoZjRqRPr7f29lmxr_fBPMEV6GZfwa89qdA2fn14"
 }
