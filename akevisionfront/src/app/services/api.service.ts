@@ -10,8 +10,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  get(endpoint: string) {
-    return this.http.get(`${this.apiUrl}${endpoint}`);
+  get(endpoint: string, options) {
+    return this.http.get(`${this.apiUrl}${endpoint}`, options);
   }
 
   post(endpoint: string, data: any) {

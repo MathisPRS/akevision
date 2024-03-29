@@ -1,11 +1,12 @@
+import io
 import zipfile
 from django.conf import settings
 from .mailing.email_factory import create_email
-import os, jwt, json ,uuid
+import os, jwt, json
 from jose import jwt as jose_jwt
 from akevision import settings
 from datetime import datetime, timedelta, timezone
-from .models import RefreshToken, AccessToken, Client
+from .models import AccessToken, Client
 from django.utils.timezone import make_aware
 from django.conf import settings
 
@@ -20,7 +21,7 @@ def send_mail_information():
 
 class TokenService:
     @staticmethod
-    def generate_access_token(client):
+    def   generate_access_token(client):
         payload = {
             'client_id': client.id,
             'ip_address': client.ipv4,
@@ -110,20 +111,26 @@ class TokenService:
 class ClientFileService :
     @staticmethod
     def create_client_files(client_id, token):
-        agent_script_path = os.path.join(os.path.dirname(__file__), 'agent_script.py')
+        # Créer un objet BytesIO pour stocker le fichier ZIP en mémoire
+        zip_buffer = io.BytesIO()
 
-        server_url = settings.SERVER_URL
-        print(server_url)
-        # Créer le fichier config.json
+        # Ajouter le fichier agent_script.py au ZIP
+        agent_script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'akevisionagent', 'linux', 'agent_script.py'))
+        with zipfile.ZipFile(zip_buffer, 'a') as zipf:
+            zipf.write(agent_script_path, os.path.basename(agent_script_path))
+
+        # Ajouter le fichier config.json au ZIP
         config = {
-            "server_url": server_url,
+            "server_url": settings.SERVER_URL,
             "client_id": client_id,
             "token": token
         }
         config_json = json.dumps(config)
-
-        with zipfile.ZipFile('client_files.zip', 'w') as zipf:
-            zipf.write(agent_script_path, os.path.basename(agent_script_path))
-            # Ajout du fichier config.json
+        with zipfile.ZipFile(zip_buffer, 'a') as zipf:
             zipf.writestr('config.json', config_json)
-            # Créer le fichier agent_script.py
+
+        # Remonter le pointeur de fichier au début du fichier ZIP
+        zip_buffer.seek(0)
+
+        # Retourner le contenu du fichier ZIP sous forme de bytes
+        return zip_buffer.read()
