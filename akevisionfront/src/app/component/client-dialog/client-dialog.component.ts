@@ -40,6 +40,7 @@ export class ClientDialogComponent {
         this.clientService.getScriptClient(response.id).subscribe(
           response2 => {
             console.log(response2);
+            this.clientService.downloadFile(response2, `client_${response.id}.zip`);
           }
         );
         
