@@ -1,11 +1,14 @@
+import io
+import zipfile
 from django.conf import settings
 from .mailing.email_factory import create_email
-import jwt, uuid
+import os, jwt, json
 from jose import jwt as jose_jwt
 from akevision import settings
 from datetime import datetime, timedelta, timezone
-from .models import RefreshToken, AccessToken, Client
+from .models import AccessToken, Client
 from django.utils.timezone import make_aware
+from django.conf import settings
 
 def send_mail_information():
     mail_param_dict = {}
@@ -18,7 +21,7 @@ def send_mail_information():
 
 class TokenService:
     @staticmethod
-    def generate_access_token(client):
+    def   generate_access_token(client):
         payload = {
             'client_id': client.id,
             'ip_address': client.ipv4,
@@ -75,8 +78,6 @@ class TokenService:
                 
         except AccessToken.DoesNotExist:
             raise Exception('Il n\'existe pas de token dans la base pour le client demandé')
-        except Client.DoesNotExist:
-             raise Exception('Le client n\'existe pas')
 
         
     @staticmethod
@@ -84,10 +85,7 @@ class TokenService:
         try:
             # Vérifier que le token n'a pas expiré
             payload = TokenService.decode_access_token(token)
-            print('validate_access_token ', payload)
             client_id = payload['client_id']
-
-            print('validate_access_token ', client_id)
 
             # Vérifier que l'id du payload est le même que celui de l'url
             if client_id != url_client:
@@ -95,7 +93,6 @@ class TokenService:
 
             # Vérifier que le token est bon
             acces_token = TokenService.get_access_token(token)
-            print('validate_access_token ', acces_token)
             client = acces_token.client_acces_token
 
             # Vérifier que l'IP de la base client est la même que celle de l'url
@@ -108,3 +105,32 @@ class TokenService:
             raise Exception('Le client n\'existe pas')
         except Exception as e:
             raise Exception(str(e))
+        
+
+
+class ClientFileService :
+    @staticmethod
+    def create_client_files(client_id, token):
+        # Créer un objet BytesIO pour stocker le fichier ZIP en mémoire
+        zip_buffer = io.BytesIO()
+
+        # Ajouter le fichier agent_script.py au ZIP
+        agent_script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'akevisionagent', 'linux', 'agent_script.py'))
+        with zipfile.ZipFile(zip_buffer, 'a') as zipf:
+            zipf.write(agent_script_path, os.path.basename(agent_script_path))
+
+        # Ajouter le fichier config.json au ZIP
+        config = {
+            "server_url": settings.SERVER_URL,
+            "client_id": client_id,
+            "token": token
+        }
+        config_json = json.dumps(config)
+        with zipfile.ZipFile(zip_buffer, 'a') as zipf:
+            zipf.writestr('config.json', config_json)
+
+        # Remonter le pointeur de fichier au début du fichier ZIP
+        zip_buffer.seek(0)
+
+        # Retourner le contenu du fichier ZIP sous forme de bytes
+        return zip_buffer.read()

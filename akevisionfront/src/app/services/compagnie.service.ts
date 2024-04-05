@@ -16,6 +16,6 @@ export class CompagnieService {
   }
 
   getAllCompagnies(): Observable<any> {
-    return this.apiService.get('/compagnies/');
+    return this.apiService.get('/compagnies/','');
   }
 }

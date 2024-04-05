@@ -31,6 +31,7 @@ config.read('%s/configlocal.cfg' % (BASE_DIR))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config.get('general', 'SECRET_KEY')
 
+SERVER_URL =  config.get('general', 'SERVER_URL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.getboolean('general', 'DEBUG')

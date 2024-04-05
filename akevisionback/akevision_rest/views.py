@@ -1,24 +1,20 @@
 import logging
-import random
-import string
-from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponse
 from rest_framework import viewsets, pagination, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import viewsets
 from django.utils.decorators import method_decorator
-from rest_framework import serializers
-from django.http import HttpResponse ,JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from .models import Compagnie, Client
+from .models import Compagnie, Client, AccessToken
 from .serializers import CompagnieSerializer, ClientSerializer, UserSerializer, GroupSerializer
 
 from .permissions import HasPermission
-from .service import send_mail_information
+from .service import TokenService, ClientFileService, send_mail_information
 from django.db import transaction
 
 
@@ -108,33 +104,32 @@ class CompagnieViewSet(viewsets.ModelViewSet):
         serializer = CompagnieSerializer(compagnies, many=True)
         return Response(serializer.data)
 
-    def create_compagnie(request):
-        serializer = CompagnieSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'La compagnie a été créée avec succès'}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'message': 'Entrée invalide', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-    
-
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-    def create_client(request):
+    def create(self, request, *args, **kwargs):
+
         serializer = ClientSerializer(data=request.data)
-        if serializer.is_valid():
-            
-            serializer.create()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        serializer.is_valid(raise_exception=True)
+        client = serializer.save()
+        TokenService.generate_access_token(client)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-    # @action(detail=False, methods=['get'], url_path='(?P<client_id>[^/.]+)/download-script')
-    # def download_script(self, request, client_id=None):
+    @action(detail=True, methods=['GET'], url_path='download-script')
+    def download_script(self, request, pk=None):
+        client = self.get_object()
+        token = str(AccessToken.objects.filter(client_acces_token=client).first())
+
+        # Créer le fichier ZIP en mémoire à l'aide du service ClientFileService
+        zip_content = ClientFileService.create_client_files(client.id, token)
+
+        # Créer la réponse HTTP avec le fichier ZIP en pièce jointe
+        response = HttpResponse(content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="client_{client.id}.zip"'
+        response.write(zip_content)
+
+        return response
         
-    #     script_content = f"#!/bin/bash\n\nCLIENT_ID='{client_id}'"
-    #     response = HttpResponse(script_content, content_type='application/x-sh')
-    #     response['Content-Disposition'] = f'attachment; filename="client_script_{client_id}.sh"'
-    #     return response
-    
+      

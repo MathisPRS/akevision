@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
 from .models import Compagnie
 from .models import Client
-from .service import TokenService
+from .service import TokenService, ClientFileService
 from django.http import HttpResponseServerError
 
 
@@ -73,6 +73,7 @@ class ClientSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
+        
         compagnie_id = validated_data['compagnie']
         compagnie = Compagnie.objects.get(id=compagnie_id)
         client = Client.objects.create(
@@ -81,6 +82,4 @@ class ClientSerializer(serializers.ModelSerializer):
             os=validated_data['os'],
             ipv4=validated_data['ipv4']
         )
-        TokenService.generate_access_token(client)
-
         return client
