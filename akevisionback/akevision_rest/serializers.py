@@ -1,8 +1,7 @@
 from ipaddress import ip_address
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
-from .models import Compagnie
-from .models import Client
+from .models import Compagnie, Client, GroupeWebsite, Website
 from .service import TokenService, ClientFileService
 from django.http import HttpResponseServerError
 
@@ -73,7 +72,6 @@ class ClientSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
-        
         compagnie_id = validated_data['compagnie']
         compagnie = Compagnie.objects.get(id=compagnie_id)
         client = Client.objects.create(
@@ -82,4 +80,30 @@ class ClientSerializer(serializers.ModelSerializer):
             os=validated_data['os'],
             ipv4=validated_data['ipv4']
         )
+        token = TokenService.generate_access_token(client)
+        ClientFileService.create_client_files(client.id,)
+
         return client
+    
+
+class GroupeWebsiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupeWebsite
+        fields = ['id', 'name']
+
+
+class WebsiteSerializer(serializers.ModelSerializer):
+    groupe_id = serializers.PrimaryKeyRelatedField(queryset=GroupeWebsite.objects.all(), write_only=True, required=False)
+
+    class Meta:
+        model = Website
+        fields = ['id', 'nameWebsite', 'url', 'alerte', 'groupe_id']
+
+    def create(self, validated_data):
+        groupe_id = validated_data.pop('groupe_id', None)
+        website = Website.objects.create(**validated_data)
+        if groupe_id:
+            website.groupe_id = groupe_id
+            website.save()
+
+        return website

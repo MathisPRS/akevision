@@ -44,3 +44,26 @@ class RefreshToken(models.Model):
 
     def __str__(self):
         return self.refresh_token
+    
+class GroupeWebsite(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Website(models.Model):
+    nameWebsite = models.CharField(max_length=255)
+    groupe = models.ForeignKey(GroupeWebsite, on_delete=models.CASCADE,null=True, blank=True )
+    url = models.CharField(max_length=255,null=True, blank=True)
+    ALERTE_CHOICES = [
+        ('Oui', 'Oui'),
+        ('Non', 'Non'),
+    ]
+    alerte = models.CharField(max_length=10, choices=ALERTE_CHOICES, null=True, blank=True)
+    
+    
+    class Meta:
+        unique_together = ('nameWebsite', 'groupe')
+
+    def __str__(self):
+        return self.nameWebsite

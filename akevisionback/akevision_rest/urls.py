@@ -13,6 +13,8 @@ router.register(r'manage-file', views.ManageFileViewSet, basename='manage-file')
 router.register(r'mail', views.MailViewset, basename='mail')
 router.register(r'compagnies', views.CompagnieViewSet)
 router.register(r'clients', views.ClientViewSet)
+router.register(r'websites', views.WebsiteViewSet)
+router.register(r'groupes-websites', views.GroupeWebsiteViewSet)
 
 
 urlpatterns = [

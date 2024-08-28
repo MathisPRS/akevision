@@ -10,8 +10,8 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from .models import Compagnie, Client, AccessToken
-from .serializers import CompagnieSerializer, ClientSerializer, UserSerializer, GroupSerializer
+from .models import Compagnie, Client, AccessToken, Website, GroupeWebsite
+from .serializers import CompagnieSerializer, ClientSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer
 
 from .permissions import HasPermission
 from .service import TokenService, ClientFileService, send_mail_information
@@ -131,5 +131,11 @@ class ClientViewSet(viewsets.ModelViewSet):
         response.write(zip_content)
 
         return response
-        
-      
+    
+class WebsiteViewSet(viewsets.ModelViewSet):
+    queryset = Website.objects.all()
+    serializer_class = WebsiteSerializer
+
+class GroupeWebsiteViewSet(viewsets.ModelViewSet):
+    queryset = GroupeWebsite.objects.all()
+    serializer_class = GroupeWebsiteSerializer
