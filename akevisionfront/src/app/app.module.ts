@@ -26,6 +26,9 @@ import { ApiService } from './services/api.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CompagnieDialogComponent } from './component/compagnie-dialog/compagnie-dialog.component';
 import { ClientDialogComponent } from './component/client-dialog/client-dialog.component';
+import { CertComponent } from './component/cert/cert.component';
+import { WebsiteDialogComponent } from './component/website-dialog/website-dialog.component';
+import { GroupeWebsiteDialogComponent } from './component/groupewebsite-dialog/groupewebsite-dialog.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -42,7 +45,10 @@ registerLocaleData(localeFr, 'fr');
     DownloadComponent,
     CompagnieDialogComponent,
     ClientDialogComponent,
-    ClientDialogComponent
+    ClientDialogComponent,
+    CertComponent,
+    WebsiteDialogComponent,
+    GroupeWebsiteDialogComponent
   ],
   imports: [
     BrowserModule,

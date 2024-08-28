@@ -7,15 +7,18 @@ import {AuthGuard} from './helpers/auth.guard';
 import {TestMatMaterialComponent} from './component/test-mat-material/test-mat-material.component';
 import {DownloadComponent} from "./component/download/download.component";
 import {ImportComponent} from "./component/import/import.component";
+import {CertComponent} from "./component/cert/cert.component";
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'mat-material', component: TestMatMaterialComponent },
-  { path: 'download', component: DownloadComponent },
-  { path: 'import', component: ImportComponent },
+  // { path: 'mat-material', component: TestMatMaterialComponent },
+  // { path: 'download', component: DownloadComponent },
+  // { path: 'import', component: ImportComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'certificat', component: CertComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: 'home' },

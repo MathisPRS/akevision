@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Choisir un Groupe</h1>
+<div mat-dialog-content>
+  <p>Cliquer sur un groupe existant pour l'attribuer, ou compléter le champ ci-dessous pour en créer un nouveau.</p>
+  <mat-form-field [disabled]="groupeName">
+    <mat-label>Groupe existant</mat-label>
+    <mat-select [(ngModel)]="selectedGroup">
+      <mat-option *ngFor="let group of groups" [value]="group.id">
+        {{ group.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Nouveau groupe</mat-label>
+    <input [(ngModel)]="groupeName" matInput>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="selectedGroup || groupeName" cdkFocusInitial>Choisir</button>
+</div>
