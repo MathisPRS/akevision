@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+// groupe-website-dialog.component.ts
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from '../../services/api.service'; // Import your ApiService
 
 @Component({
@@ -14,18 +15,10 @@ export class GroupeWebsiteDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<GroupeWebsiteDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private apiService: ApiService
   ) {
-    this.apiService.get('/groupes-websites/', { responseType: 'arraybuffer' }).subscribe(
-      response => {
-        const decoder = new TextDecoder('utf-8');
-        const jsonString = decoder.decode(response);
-        this.groups = JSON.parse(jsonString);
-      },
-      error => {
-        console.error('Error fetching groups', error);
-      }
-    );
+    this.groups = data.groups;
   }
 
   closeDialog() {
@@ -41,7 +34,7 @@ export class GroupeWebsiteDialogComponent {
       );
     } else if (this.selectedGroup) {
       // Return the selected group ID
-      this.dialogRef.close(this.selectedGroup);
+      this.dialogRef.close(this.groups.find(group => group.id === this.selectedGroup));
     } else {
       // Close the dialog without returning a group ID
       this.dialogRef.close();

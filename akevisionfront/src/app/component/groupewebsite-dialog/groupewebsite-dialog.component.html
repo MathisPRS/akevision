@@ -1,3 +1,4 @@
+<!-- groupe-website-dialog.component.html -->
 <h1 mat-dialog-title>Choisir un Groupe</h1>
 <div mat-dialog-content>
   <p>Cliquer sur un groupe existant pour l'attribuer, ou compléter le champ ci-dessous pour en créer un nouveau.</p>
@@ -16,5 +17,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Annuler</button>
-  <button mat-button [mat-dialog-close]="selectedGroup || groupeName" cdkFocusInitial>Choisir</button>
+  <button mat-button (click)="closeDialog()" cdkFocusInitial>Choisir</button>
 </div>

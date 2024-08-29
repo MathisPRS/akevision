@@ -1,3 +1,4 @@
+// website-dialog.component.ts
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,6 +12,8 @@ import { GroupeWebsiteDialogComponent } from '../groupewebsite-dialog/groupewebs
 })
 export class WebsiteDialogComponent {
   websiteForm: FormGroup;
+  groups: any[];
+  selectedGroupName: string;
 
   constructor(
     private fb: FormBuilder,
@@ -18,9 +21,8 @@ export class WebsiteDialogComponent {
     public dialogRef: MatDialogRef<WebsiteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private apiService: ApiService // Inject your ApiService
-    )
-    {
-      this.websiteForm = this.fb.group({
+  ) {
+    this.websiteForm = this.fb.group({
       nameWebsite: ['', Validators.required],
       url: ['', Validators.required],
       alerte: ['', Validators.required],
@@ -29,11 +31,12 @@ export class WebsiteDialogComponent {
 
   onSubmit() {
     const website = {
-      nameWebsite: this.websiteForm.value.nameWebSite,
+      nameWebsite: this.websiteForm.value.nameWebsite,
       url: this.websiteForm.value.url,
-      alerte : this.websiteForm.value.alerte
-      // groupe_id: this.websiteForm.value.groupe,
+      alerte : this.websiteForm.value.alerte,
+      groupe_id: this.selectedGroupName
     };
+    console.log(this.groups)
     console.log(website)
     this.apiService.post('/websites/', website).subscribe(
       response => {
@@ -48,18 +51,27 @@ export class WebsiteDialogComponent {
   }
 
   openGroupeWebsiteDialog() {
-    const dialogRef = this.dialog.open(GroupeWebsiteDialogComponent, {
-      width: '350px',
-      height :'220px'
-      
-    });
+    this.apiService.getAllGroupesWebsite().subscribe(
+      response => {
+        this.groups = response.results;
+        console.log(this.groups)
+        const dialogRef = this.dialog.open(GroupeWebsiteDialogComponent, {
+          width: '450px',
+          data: { groups: this.groups }
+        });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // User chose a group or created a new one
-        // You can now add the group to the website object
-        this.websiteForm.patchValue({ groupe: result });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            // User chose a group or created a new one
+            // You can now add the group to the website object
+            this.websiteForm.patchValue({ groupe: result });
+            this.selectedGroupName = result.name;
+          }
+        });
+      },
+      error => {
+        console.error('Error fetching groups', error);
       }
-    });
+    );
   }
 }

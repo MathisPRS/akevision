@@ -1,6 +1,7 @@
+<!-- website-dialog.component.html -->
 <h1 mat-dialog-title>Ajouter un Site Web</h1>
 <div mat-dialog-content>
-  <form [formGroup]="websiteForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="websiteForm">
     <mat-form-field>
       <mat-label>Nom du Site</mat-label>
       <input formControlName="nameWebsite" matInput>
@@ -16,10 +17,12 @@
         <mat-option value="Non">Non</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button (click)="openGroupeWebsiteDialog()">Affecter à un groupe</button>
+    <button mat-raised-button (click)="openGroupeWebsiteDialog()">
+      {{ selectedGroupName ? selectedGroupName : 'Affecter à un groupe' }}
+    </button>
     <div mat-dialog-actions>
       <button mat-button mat-dialog-close>Annuler</button>
-      <button mat-button type="submit" [disabled]="websiteForm.invalid">Ajouter</button>
+      <button mat-button (click)="onSubmit()" [disabled]="websiteForm.invalid">Ajouter</button>
     </div>
   </form>
 </div>
