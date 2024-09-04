@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api.service'; // Import your ApiService
 import { GroupeWebsiteDialogComponent } from '../groupewebsite-dialog/groupewebsite-dialog.component' ;
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-website-dialog',
@@ -17,6 +18,7 @@ export class WebsiteDialogComponent {
 
   constructor(
     private fb: FormBuilder,
+    private snackBar: MatSnackBar,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<WebsiteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -34,17 +36,19 @@ export class WebsiteDialogComponent {
       nameWebsite: this.websiteForm.value.nameWebsite,
       url: this.websiteForm.value.url,
       alerte : this.websiteForm.value.alerte,
-      groupe_id: this.selectedGroupName
+      groupe_name: this.selectedGroupName
     };
     console.log(this.groups)
     console.log(website)
     this.apiService.post('/websites/', website).subscribe(
       response => {
-        console.log('Data saved successfully', response);
         // Handle success
-      },
+        this.snackBar.open("Le Website a été créée avec succès", "Fermer", { duration: 3000 });
+        this.dialogRef.close();
+        console.log(response);
+      },      
       error => {
-        console.error('Error saving data', error);
+        console.error(error);
         // Handle error
       }
     );

@@ -60,6 +60,7 @@ class Website(models.Model):
         ('Non', 'Non'),
     ]
     alerte = models.CharField(max_length=10, choices=ALERTE_CHOICES, null=True, blank=True)
+    ssl_expiration = models.IntegerField(null=True)
     
     
     class Meta:

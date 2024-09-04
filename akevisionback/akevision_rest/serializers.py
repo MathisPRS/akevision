@@ -1,10 +1,11 @@
 from ipaddress import ip_address
+from urllib.parse import urlparse
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
 from .models import Compagnie, Client, GroupeWebsite, Website
 from .service import TokenService, ClientFileService
 from django.http import HttpResponseServerError
-
+from akevision_rest import async_service
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -93,17 +94,44 @@ class GroupeWebsiteSerializer(serializers.ModelSerializer):
 
 
 class WebsiteSerializer(serializers.ModelSerializer):
-    groupe_id = serializers.PrimaryKeyRelatedField(queryset=GroupeWebsite.objects.all(), write_only=True, required=False)
+    groupe_name = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = Website
-        fields = ['id', 'nameWebsite', 'url', 'alerte', 'groupe_id']
+        fields = ['id', 'nameWebsite', 'url', 'alerte', 'groupe_name']
+
+    def validate(self, data):
+        groupe_name = data.get('groupe_name')
+        nameWebsite = data.get('nameWebsite')
+        url = data.get('url')
+
+        # Check if URL is valid
+        try:
+            result = urlparse(url)
+            if not all([result.scheme, result.netloc]):
+                raise serializers.ValidationError("Invalid URL")
+        except ValueError:
+            raise serializers.ValidationError("Invalid URL")
+
+        # Check if groupe_name is provided
+        if groupe_name:
+            # Get or create groupe
+            groupe, created = GroupeWebsite.objects.get_or_create(name=groupe_name)
+            data['groupe_id'] = groupe.id
+
+        # Check for duplicate website names within the same group
+        if Website.objects.filter(nameWebsite=nameWebsite, groupe_id=data.get('groupe_id')).exists():
+            raise serializers.ValidationError("Website with this name already exists in this group")
+
+        return data
 
     def create(self, validated_data):
         groupe_id = validated_data.pop('groupe_id', None)
+        validated_data.pop('groupe_name', None)  # Remove groupe_name from validated_data
+
         website = Website.objects.create(**validated_data)
         if groupe_id:
             website.groupe_id = groupe_id
             website.save()
-
+            async_service.update_ssl_expiration()
         return website

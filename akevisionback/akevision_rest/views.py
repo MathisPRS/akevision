@@ -139,3 +139,8 @@ class WebsiteViewSet(viewsets.ModelViewSet):
 class GroupeWebsiteViewSet(viewsets.ModelViewSet):
     queryset = GroupeWebsite.objects.all()
     serializer_class = GroupeWebsiteSerializer
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
