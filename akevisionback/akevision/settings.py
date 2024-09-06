@@ -14,6 +14,7 @@ import configparser
 import os
 import sys
 import logging
+from akevision_rest.celery_beat_schedule import CELERY_BEAT_SCHEDULE
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,6 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
+    'django_celery_results',
     'rest_framework',
     'corsheaders',
     'django_filters',
@@ -149,6 +152,14 @@ DATABASES = {
 }
 
 
+
+CELERY_BROKER_URL = config.get('celery', 'CELERY_BROKER_REDIS_URL')
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BEAT_SCHEDULER  = 'django_celery_beat.schedulers.DatabaseScheduler'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
