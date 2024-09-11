@@ -1,0 +1,38 @@
+/* cert.component.scss */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Espace entre les cartes */
+    justify-content: center; /* Centrer les cartes */
+  }
+  
+  .card-item {
+    flex: 1 1 calc(33.333% - 16px); /* 3 cartes par ligne */
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 992px) {
+    .card-item {
+      flex: 1 1 calc(50% - 16px); /* 2 cartes par ligne sur les écrans plus petits */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .card-item {
+      flex: 1 1 100%; /* 1 carte par ligne sur les écrans encore plus petits */
+    }
+  }
+  
+  .add-site-button {
+    background-color: #3f51b5; /* Couleur de fond plus foncée */
+    color: white; /* Couleur du texte */
+    width: auto; /* Largeur automatique */
+    padding: 10px 20px; /* Padding pour ajuster la taille du bouton */
+    border-radius: 4px; /* Bordures arrondies */
+    font-weight: bold; /* Texte en gras */
+  }
+  
+  .add-site-button:hover {
+    background-color: #225ca7; /* Couleur de fond plus foncée au survol */
+  }
+  

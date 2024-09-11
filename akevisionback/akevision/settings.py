@@ -155,6 +155,8 @@ DATABASES = {
 
 CELERY_BROKER_URL = config.get('celery', 'CELERY_BROKER_REDIS_URL')
 CELERY_RESULT_BACKEND = "django-db"
+#CELERY_BEAT_SCHEDULER  = CELERY_BEAT_SCHEDULE
+
 CELERY_BEAT_SCHEDULER  = 'django_celery_beat.schedulers.DatabaseScheduler'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'

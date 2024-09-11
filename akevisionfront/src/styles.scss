@@ -36,7 +36,7 @@ span:focus, a:focus {
   position: fixed;
 }
 .green-border-bottom {
-  border-bottom: 1px solid #50a722 ;
+  border-bottom: 1px solid #225ca7 ;
 }
 .mr-50{
   margin-right: 1.25rem;
@@ -174,7 +174,7 @@ mat-radio-button .mat-radio-label {
     font-size: large;
     vertical-align: 50%;
     min-height: 63px;
-    border-bottom: 0.5px solid #50a722;
+    border-bottom: 0.5px solid #225ca7;
     padding: 10px 0 0 0;
     background-color: #ffffff;
   }
@@ -249,7 +249,7 @@ mat-radio-button .mat-radio-label {
     border: none;
     color: #4b4b4b;
     font-size: large;
-    border-bottom: 0.5px solid #50a722;
+    border-bottom: 0.5px solid #225ca7;
     background-color: #ffffff;
   }
   .big-font {
@@ -268,13 +268,13 @@ mat-radio-button .mat-radio-label {
 }
 /* Button gold principal use*/
 .btn-gold, .btn-gold:hover,.btn-gold:focus, .btn-gold:visited {
-    background-color: rgba(170, 241, 129) !important;
+    background-color: #225ca7 !important;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
     color: #161616;
     max-height:  40px;
 }
 .btn-gold:active{
-   box-shadow: 0 2px 12px 0 rgba(170, 241, 129),0 0 0 1px rgba(170, 241, 129);
+   box-shadow: 0 2px 12px 0 #225ca7,0 0 0 1px #225ca7;
  }
 
 html, body { height: 100%; }

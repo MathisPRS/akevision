@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 
 @Injectable({
@@ -30,6 +30,12 @@ export class ApiService {
 
   getAllGroupesWebsite(): Observable<any> {
     return this.get('/groupes-websites/','');
+  }
+
+  getAllWebsite(): Observable<any> {
+    return this.get('/websites/','').pipe(
+      map(response => response['results'])
+    );
   }
 
 

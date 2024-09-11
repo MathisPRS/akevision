@@ -29,6 +29,7 @@ import { ClientDialogComponent } from './component/client-dialog/client-dialog.c
 import { CertComponent } from './component/cert/cert.component';
 import { WebsiteDialogComponent } from './component/website-dialog/website-dialog.component';
 import { GroupeWebsiteDialogComponent } from './component/groupewebsite-dialog/groupewebsite-dialog.component';
+import { WebsiteCardComponent } from './component/website-card/website-card.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -48,7 +49,8 @@ registerLocaleData(localeFr, 'fr');
     ClientDialogComponent,
     CertComponent,
     WebsiteDialogComponent,
-    GroupeWebsiteDialogComponent
+    GroupeWebsiteDialogComponent,
+    WebsiteCardComponent
   ],
   imports: [
     BrowserModule,

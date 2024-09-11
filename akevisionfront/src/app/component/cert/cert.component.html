@@ -1,1 +1,11 @@
-<button mat-raised-button (click)="openWebSiteDialog()">Ajouter un site</button>
+<div class="card d-flex">
+    <div class="card-body">
+      <button mat-raised-button class="add-site-button" (click)="openWebSiteDialog()">Ajouter un site</button>
+    </div>
+  </div>
+  <div class="card-container">
+    <div *ngFor="let website of websites" class="card-item">
+      <app-website-card [website]="website"></app-website-card>
+    </div>
+  </div>
+  

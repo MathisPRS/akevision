@@ -98,7 +98,7 @@ class WebsiteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Website
-        fields = ['id', 'nameWebsite', 'url', 'alerte', 'groupe_name']
+        fields = ['id', 'nameWebsite', 'url', 'alerte', 'groupe_name', 'ssl_expiration']
 
     def validate(self, data):
         groupe_name = data.get('groupe_name')
