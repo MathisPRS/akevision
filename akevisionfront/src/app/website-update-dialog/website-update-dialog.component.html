@@ -1,0 +1,18 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title>Mettre à jour le site</h2>
+    <div mat-dialog-content>
+      <form>
+        <mat-form-field>
+          <input matInput placeholder="Nom du site" [(ngModel)]="website.nameWebsite" name="nameWebsite">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="URL" [(ngModel)]="website.url" name="url">
+        </mat-form-field>
+      </form>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Annuler</button>
+      <button mat-button (click)="onApply()" [disabled]="!website.nameWebsite || !website.url">Appliquer</button>
+    </div>
+  </div>
+  
