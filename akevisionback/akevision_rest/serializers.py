@@ -95,10 +95,12 @@ class GroupeWebsiteSerializer(serializers.ModelSerializer):
 
 class WebsiteSerializer(serializers.ModelSerializer):
     groupe_name = serializers.CharField(write_only=True, required=False)
+    groupe_id = serializers.IntegerField(source='groupe.id', read_only=True)
+
 
     class Meta:
         model = Website
-        fields = ['id', 'nameWebsite', 'url', 'alerte', 'groupe_name', 'ssl_expiration']
+        fields = ['id', 'nameWebsite', 'url', 'alerte', 'groupe_name', 'ssl_expiration', 'groupe_id']
 
     def validate(self, data):
         groupe_name = data.get('groupe_name')

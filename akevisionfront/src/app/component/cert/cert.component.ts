@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupeWebsiteDialogComponent } from '../groupewebsite-dialog/groupewebsite-dialog.component';
 import { WebsiteDialogComponent } from '../website-dialog/website-dialog.component';
-import { WebsiteUpdateDialogComponent } from '../../website-update-dialog/website-update-dialog.component';
+import { WebsiteUpdateDialogComponent } from '../website-update-dialog/website-update-dialog.component';
 
 import { CompagnieService } from '../../services/compagnie.service';
 import { ApiService } from '../../services/api.service';

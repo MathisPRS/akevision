@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { WebsiteUpdateDialogComponent } from '../../website-update-dialog/website-update-dialog.component';
+import { WebsiteUpdateDialogComponent } from '../website-update-dialog/website-update-dialog.component';
 
 @Component({
   selector: 'app-website-card',

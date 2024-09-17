@@ -30,7 +30,7 @@ import { CertComponent } from './component/cert/cert.component';
 import { WebsiteDialogComponent } from './component/website-dialog/website-dialog.component';
 import { GroupeWebsiteDialogComponent } from './component/groupewebsite-dialog/groupewebsite-dialog.component';
 import { WebsiteCardComponent } from './component/website-card/website-card.component';
-import { WebsiteUpdateDialogComponent } from './website-update-dialog/website-update-dialog.component';
+import { WebsiteUpdateDialogComponent } from './component/website-update-dialog/website-update-dialog.component';
 
 registerLocaleData(localeFr, 'fr');
 
