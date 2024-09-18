@@ -61,7 +61,13 @@ class Website(models.Model):
     ]
     alerte = models.CharField(max_length=10, choices=ALERTE_CHOICES, null=True, blank=True)
     ssl_expiration = models.IntegerField(null=True)
-    
+    COULEUR_CHOICES = [
+        ('rouge', 'Rouge'),
+        ('orange', 'Orange'),
+        ('vert', 'Vert'),
+        ('gris', 'Gris'),
+    ]
+    couleur = models.CharField(max_length=10, choices=COULEUR_CHOICES, null=True, blank=True)
     
     class Meta:
         unique_together = ('nameWebsite', 'groupe')

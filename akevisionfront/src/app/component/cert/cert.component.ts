@@ -40,6 +40,8 @@ export class CertComponent implements OnInit {
     });
 
     dialogWebsiteRef.afterClosed().subscribe(result => {
+      console.log('erererere');
+      console.log(result);
       if (result) {
         this.websiteMessage = "La compagnie a été créée avec succès";
         this.loadWebsites(); // Recharger les données après l'ajout

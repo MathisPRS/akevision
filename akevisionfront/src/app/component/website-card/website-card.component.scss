@@ -10,3 +10,18 @@
     background-color: #225ca7; /* Couleur de fond plus foncée au survol */
   }
   
+  /* website-card.component.scss */
+.card {
+  &.gris {
+    background-color: #cccccc; /* Couleur grise */
+  }
+  &.rouge {
+    background-color: #ff0000; /* Couleur rouge */
+  }
+  &.orange {
+    background-color: #dbb877; /* Couleur orange */
+  }
+  &.vert {
+    background-color: #7cc57c; /* Couleur verte */
+  }
+}

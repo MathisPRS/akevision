@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { GroupeWebsiteDialogComponent } from '../groupewebsite-dialog/groupewebsite-dialog.component' ;
+import { CertComponent } from '../cert/cert.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -15,6 +16,7 @@ export class WebsiteDialogComponent {
   websiteForm: FormGroup;
   groups: any[];
   selectedGroupName: string;
+  websites: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -36,22 +38,32 @@ export class WebsiteDialogComponent {
       nameWebsite: this.websiteForm.value.nameWebsite,
       url: this.websiteForm.value.url,
       alerte : this.websiteForm.value.alerte,
-      groupe_name: this.selectedGroupName
+      groupe_name: this.selectedGroupName,
     };
-    console.log(this.groups)
-    console.log(website)
+    
     this.apiService.post('/websites/', website).subscribe(
       response => {
         // Handle success
+
         this.snackBar.open("Le Website a été créée avec succès", "Fermer", { duration: 3000 });
-        this.dialogRef.close();
-        console.log(response);
+        this.loadWebsites();
+        this.dialogRef.close({event: 'added'});
+        
+
+        
       },      
       error => {
         console.error(error);
-        // Handle error
+        
       }
     );
+  }
+
+  loadWebsites(): void {
+    this.apiService.getAllWebsite().subscribe(data => {
+      this.websites = data;
+      console.log(this.websites);
+    });
   }
 
   openGroupeWebsiteDialog() {

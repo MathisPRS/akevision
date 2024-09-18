@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Compagnie, Client, AccessToken, Website, GroupeWebsite
 from .serializers import CompagnieSerializer, ClientSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer
-
+from .async_service import update_ssl_expiration
 from .permissions import HasPermission
 from .service import TokenService, ClientFileService, send_mail_information
 from django.db import transaction
@@ -135,7 +135,12 @@ class ClientViewSet(viewsets.ModelViewSet):
 class WebsiteViewSet(viewsets.ModelViewSet):
     queryset = Website.objects.all()
     serializer_class = WebsiteSerializer
-
+    
+    def list(self, request, *args, **kwargs):
+        update_ssl_expiration()
+        response = super().list(request, *args, **kwargs)
+        return response
+    
 class GroupeWebsiteViewSet(viewsets.ModelViewSet):
     queryset = GroupeWebsite.objects.all()
     serializer_class = GroupeWebsiteSerializer

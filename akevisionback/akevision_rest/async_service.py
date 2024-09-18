@@ -24,6 +24,17 @@ def update_ssl_expiration():
             ssl_expiration = (expire_date - datetime.now(pytz.UTC)).days
             logger.info(f"{website} {url} {ssl_expiration}")
             website.ssl_expiration = ssl_expiration
+
+            # Attribuer une couleur en fonction de la valeur de ssl_expiration
+            if ssl_expiration is None:
+                website.couleur = 'gris'
+            elif ssl_expiration <= 5:
+                website.couleur = 'rouge'
+            elif ssl_expiration <= 30:
+                website.couleur = 'orange'
+            else:
+                website.couleur = 'vert'
+
             website.save()
         except Exception as e:
             logger.error(f"Error updating SSL expiration for {url}: {e}")
