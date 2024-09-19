@@ -68,6 +68,7 @@ class Website(models.Model):
         ('gris', 'Gris'),
     ]
     couleur = models.CharField(max_length=10, choices=COULEUR_CHOICES, null=True, blank=True)
+    last_verification = models.DateField(null=True, blank=True)
     
     class Meta:
         unique_together = ('nameWebsite', 'groupe')

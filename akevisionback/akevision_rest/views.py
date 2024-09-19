@@ -142,7 +142,7 @@ class WebsiteViewSet(viewsets.ModelViewSet):
         return response
     
 class GroupeWebsiteViewSet(viewsets.ModelViewSet):
-    queryset = GroupeWebsite.objects.all()
+    queryset = GroupeWebsite.objects.all().order_by('name')
     serializer_class = GroupeWebsiteSerializer
     
     def create(self, request, *args, **kwargs):
