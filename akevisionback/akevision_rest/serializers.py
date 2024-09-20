@@ -2,7 +2,7 @@ from ipaddress import ip_address
 from urllib.parse import urlparse
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
-from .models import Compagnie, Client, GroupeWebsite, Website
+from .models import Compagnie, Poste, GroupeWebsite, Website
 from django.http import HttpResponseServerError
 from akevision_rest import async_service
 

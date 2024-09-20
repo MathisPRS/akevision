@@ -1,7 +1,7 @@
 import logging
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
-from .rest_framework import viewsets, pagination, status
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -10,8 +10,8 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from .models import Compagnie, Client, Website, GroupeWebsite
-from .serializers import CompagnieSerializer, ClientSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer
+from .models import Compagnie, Poste, Website, GroupeWebsite
+from .serializers import CompagnieSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer
 from .async_service import update_ssl_expiration
 from .permissions import HasPermission
 from .service import  send_mail_information
@@ -101,9 +101,9 @@ class CompagnieViewSet(viewsets.ModelViewSet):
 
     
 
-class ClientViewSet(viewsets.ModelViewSet):
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
+# class ClientViewSet(viewsets.ModelViewSet):
+#     queryset = Client.objects.all()
+#     serializer_class = ClientSerializer
 
     
 class WebsiteViewSet(viewsets.ModelViewSet):

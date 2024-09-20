@@ -6,7 +6,7 @@ import os, jwt, json
 from jose import jwt as jose_jwt
 from akevision import settings
 from datetime import datetime, timedelta, timezone
-from .models import Client
+from .models import Poste
 from django.utils.timezone import make_aware
 from django.conf import settings
 

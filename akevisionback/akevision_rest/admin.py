@@ -1,14 +1,14 @@
 from django.contrib import admin
-from .models import Compagnie, Client, Website, GroupeWebsite
+from .models import Compagnie, Poste, Website, GroupeWebsite
 
 class CompagnieAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Compagnie, CompagnieAdmin)
 
 
-class CLientAdmin(admin.ModelAdmin):
+class PosteAdmin(admin.ModelAdmin):
     pass
-admin.site.register(Client, CLientAdmin)
+admin.site.register(Poste, PosteAdmin)
 
 
 class WebsiteAdmin(admin.ModelAdmin):
