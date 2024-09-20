@@ -153,15 +153,15 @@ DATABASES = {
 
 
 
-CELERY_BROKER_URL = config.get('celery', 'CELERY_BROKER_REDIS_URL')
-CELERY_RESULT_BACKEND = "django-db"
-#CELERY_BEAT_SCHEDULER  = CELERY_BEAT_SCHEDULE
+# CELERY_BROKER_URL = config.get('celery', 'CELERY_BROKER_REDIS_URL')
+# CELERY_RESULT_BACKEND = "django-db"
+# #CELERY_BEAT_SCHEDULER  = CELERY_BEAT_SCHEDULE
 
-CELERY_BEAT_SCHEDULER  = 'django_celery_beat.schedulers.DatabaseScheduler'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
+# CELERY_BEAT_SCHEDULER  = 'django_celery_beat.schedulers.DatabaseScheduler'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'UTC'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

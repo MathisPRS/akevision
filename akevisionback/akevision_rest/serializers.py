@@ -3,7 +3,6 @@ from urllib.parse import urlparse
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
 from .models import Compagnie, Client, GroupeWebsite, Website
-from .service import TokenService, ClientFileService
 from django.http import HttpResponseServerError
 from akevision_rest import async_service
 
@@ -45,47 +44,7 @@ class CompagnieSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('La compagnie existe déjà')
         return value
 
-class ClientSerializer(serializers.ModelSerializer):
-    compagnie_id = serializers.PrimaryKeyRelatedField(queryset=Compagnie.objects.all(), source='compagnie')
-
-    class Meta:
-        model = Client
-        fields = ['id', 'name', 'compagnie_id', 'os', 'ipv4']
    
-    def validate_name(self, value):
-        compagnie_id = self.initial_data.get('compagnie_id')
-        if Client.objects.filter(name=value, compagnie_id=compagnie_id).exists():
-            raise HttpResponseServerError('Un client du même nom existe déjà dans cette compagnie')
-        return value
-    
-    def validate_compagnie_id(self, value):
-        if not isinstance(value, int):
-            value = value.id
-        if not Compagnie.objects.filter(id=value).exists():
-            raise HttpResponseServerError('La compagnie n\'existe pas')
-        return value
-    
-    def validate_ipv4(self, value):
-        try:
-            ip_address(value)
-        except ValueError:
-            raise HttpResponseServerError('La valeur n\'est pas une adresse IPv4 valide')
-        return value
-    
-    def create(self, validated_data):
-        compagnie_id = validated_data['compagnie']
-        compagnie = Compagnie.objects.get(id=compagnie_id)
-        client = Client.objects.create(
-            name=validated_data['name'],
-            compagnie=compagnie,
-            os=validated_data['os'],
-            ipv4=validated_data['ipv4']
-        )
-        token = TokenService.generate_access_token(client)
-        ClientFileService.create_client_files(client.id,)
-
-        return client
-    
 
 class GroupeWebsiteSerializer(serializers.ModelSerializer):
     class Meta:
