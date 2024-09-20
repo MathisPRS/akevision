@@ -18,3 +18,12 @@ def send_mail_information():
     # troisième paramètre : array avec la liste des mails des destinataires
     mail_to_send = create_email('warning', mail_param_dict, ['prenom.nom@mail.com'])
     mail_to_send.send(fail_silently=False)
+
+def generate_token(compagnie_id, compagnie_name):
+    payload = {
+        'compagnie_id': compagnie_id,
+        'compagnie_name': compagnie_name,
+        
+    }
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+    return token

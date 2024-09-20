@@ -15,7 +15,7 @@ router.register(r'compagnies', views.CompagnieViewSet)
 # router.register(r'clients', views.ClientViewSet)
 router.register(r'websites', views.WebsiteViewSet)
 router.register(r'groupes-websites', views.GroupeWebsiteViewSet)
-
+router.register(r'agents', views.AgentViewSet, basename='agents' )
 
 urlpatterns = [
     path("auth/", AuthAPIView.as_view(), name='test'),

@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
 from .models import Compagnie, Poste, GroupeWebsite, Website
+from .service import generate_token
 from django.http import HttpResponseServerError
 from akevision_rest import async_service
 
@@ -43,7 +44,13 @@ class CompagnieSerializer(serializers.ModelSerializer):
         if Compagnie.objects.filter(name=value).exists():
             raise serializers.ValidationError('La compagnie existe déjà')
         return value
-
+    
+    def create(self, validated_data):
+            compagnie = Compagnie.objects.create(**validated_data)
+            token = generate_token(compagnie.id, compagnie.name )
+            compagnie.token = token.encode('utf-8') 
+            compagnie.save()
+            return compagnie
    
 
 class GroupeWebsiteSerializer(serializers.ModelSerializer):

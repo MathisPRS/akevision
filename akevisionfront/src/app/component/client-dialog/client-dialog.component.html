@@ -2,14 +2,6 @@
 <div mat-dialog-content>
   <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <mat-label>Nom du client</mat-label>
-      <input formControlName="nomClient" matInput>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>IPv4 du Client</mat-label>
-      <input formControlName="ipv4" matInput>
-    </mat-form-field>
-    <mat-form-field>
       <mat-label>Type de client</mat-label>
       <mat-select formControlName="typeClient">
         <mat-option value="Linux">Linux</mat-option>

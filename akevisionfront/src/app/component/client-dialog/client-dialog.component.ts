@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ClientService } from '../../services/client.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-client-dialog',
@@ -16,33 +16,34 @@ export class ClientDialogComponent {
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ClientDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private clientService: ClientService)
+    private apiService: ApiService)
     {
       this.compagnies = data.compagnies;
       this.clientForm = this.fb.group({
-      nomClient: ['', Validators.required],
       typeClient: ['', Validators.required],
       compagnie: ['', Validators.required],
-      ipv4: ['', Validators.required]
     });
   }
 
   onSubmit() {
-    const client = {
-      name: this.clientForm.value.nomClient,
+    const agent = {
       os: this.clientForm.value.typeClient,
       compagnie_id: this.clientForm.value.compagnie,
-      ipv4: this.clientForm.value.ipv4
     };
-    this.clientService.createClient(client).subscribe(
+    this.apiService.buildAgent(agent).subscribe(
       response => {
         console.log(response);
-        this.clientService.getScriptClient(response.id).subscribe(
-          response2 => {
-            console.log(response2);
-            this.clientService.downloadFile(response2, `client_${response.id}.zip`);
-          }
-        );
+
+        // Créer un lien pour télécharger le fichier texte
+        const blob = new Blob([response], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'agent_info.txt';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
         
         this.dialogRef.close();
       },
