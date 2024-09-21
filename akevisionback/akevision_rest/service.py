@@ -3,6 +3,7 @@ import zipfile
 from django.conf import settings
 from .mailing.email_factory import create_email
 import os, jwt, json
+from cryptography.fernet import Fernet
 from jose import jwt as jose_jwt
 from akevision import settings
 from datetime import datetime, timedelta, timezone
@@ -27,3 +28,7 @@ def generate_token(compagnie_id, compagnie_name):
     }
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
     return token
+
+def generate_aes_key():
+    key = Fernet.generate_key()
+    return key

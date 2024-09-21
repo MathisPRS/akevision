@@ -1,4 +1,6 @@
 {
+    "poste_id": 16,
     "server_url": "localhost:8000",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjIsImlwX2FkZHJlc3MiOiIxMjcuMC4wLjEifQ.LjpwUtoFP9eUgtopnjfvoHGj-5x-C0o2DZCE_tdnYTQ"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYWduaWVfaWQiOjE2LCJjb21wYWduaWVfbmFtZSI6bnVsbH0.i5udzawMfZXl2Pj55deRPXI2HrmvVi7TJxV51df4a7o",
+    "aes_key" : "Cxx7nKiOILly3MCC5He67wv9naywIlDSh6cfGQ6OTSE="
 }

@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Compagnie, Poste, Website, GroupeWebsite
-from .serializers import CompagnieSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer
+from .serializers import CompagnieSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer, PosteSerializer
 from .async_service import update_ssl_expiration
 from .permissions import HasPermission
 from .service import  send_mail_information
@@ -99,30 +99,34 @@ class CompagnieViewSet(viewsets.ModelViewSet):
     queryset = Compagnie.objects.all()
     serializer_class = CompagnieSerializer
 
-class AgentViewSet(viewsets.ViewSet):
-    def create(self, request, *args, **kwargs):
-        data = request.data
-        print(data)
-        os_type = data.get('os')
-        compagnie_id = data.get('compagnie_id')
+class PosteViewSet(viewsets.ModelViewSet):
+    queryset = Poste.objects.all()
+    serializer_class = PosteSerializer
 
-        try:
-            compagnie = Compagnie.objects.get(id=compagnie_id)
-        except Compagnie.DoesNotExist:
-            return Response({'error': 'Compagnie non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+# class AgentViewSet(viewsets.ViewSet):
+#     def create(self, request, *args, **kwargs):
+#         data = request.data
+#         print(data)
+#         os_type = data.get('os')
+#         compagnie_id = data.get('compagnie_id')
+
+#         try:
+#             compagnie = Compagnie.objects.get(id=compagnie_id)
+#         except Compagnie.DoesNotExist:
+#             return Response({'error': 'Compagnie non trouvée'}, status=status.HTTP_404_NOT_FOUND)
         
-        print(compagnie.token)
-        token_compagnie = compagnie.token
+#         print(compagnie.token)
+#         token_compagnie = compagnie.token
 
-        # Créer le contenu du fichier texte
-        content = f"os --> {os_type}\n"
-        content += f"token_compagnie --> {token_compagnie}\n"
+#         # Créer le contenu du fichier texte
+#         content = f"os --> {os_type}\n"
+#         content += f"token_compagnie --> {token_compagnie}\n"
 
-        # Créer la réponse HTTP avec le fichier texte
-        response = HttpResponse(content, content_type='text/plain')
-        response['Content-Disposition'] = 'attachment; filename="agent_info.txt"'
+#         # Créer la réponse HTTP avec le fichier texte
+#         response = HttpResponse(content, content_type='text/plain')
+#         response['Content-Disposition'] = 'attachment; filename="agent_info.txt"'
 
-        return response
+#         return response
     
 class WebsiteViewSet(viewsets.ModelViewSet):
     queryset = Website.objects.all()

@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
 from .models import Compagnie, Poste, GroupeWebsite, Website
-from .service import generate_token
+from .service import generate_token, generate_aes_key
 from django.http import HttpResponseServerError
 from akevision_rest import async_service
 
@@ -52,6 +52,25 @@ class CompagnieSerializer(serializers.ModelSerializer):
             compagnie.save()
             return compagnie
    
+
+class PosteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Poste
+        fields = ['id', 'os', 'compagnie_id']
+
+    def create(self, validated_data):
+            compagnie_id = validated_data.get('compagnie_id')
+            print(validated_data)
+            print(compagnie_id)
+            compagnie = Compagnie.objects.get(name=compagnie_id)
+            poste = Poste.objects.create(os=validated_data['os'], compagnie_id=compagnie)
+            poste.name = f"poste_{poste.id}"
+            token = generate_token(poste.id, compagnie.token )
+            aes_key = generate_aes_key()
+            poste.token = token.encode('utf-8')
+            poste.aes_key = aes_key.decode()
+            poste.save()
+            return compagnie
 
 class GroupeWebsiteSerializer(serializers.ModelSerializer):
     class Meta:

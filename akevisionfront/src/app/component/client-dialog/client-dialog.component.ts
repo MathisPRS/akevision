@@ -26,24 +26,25 @@ export class ClientDialogComponent {
   }
 
   onSubmit() {
-    const agent = {
+    const poste = {
       os: this.clientForm.value.typeClient,
       compagnie_id: this.clientForm.value.compagnie,
     };
-    this.apiService.buildAgent(agent).subscribe(
+    console.log(poste)
+    this.apiService.addPoste(poste).subscribe(
       response => {
         console.log(response);
 
-        // Créer un lien pour télécharger le fichier texte
-        const blob = new Blob([response], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'agent_info.txt';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
+        // // Créer un lien pour télécharger le fichier texte
+        // const blob = new Blob([response], { type: 'text/plain' });
+        // const url = window.URL.createObjectURL(blob);
+        // const a = document.createElement('a');
+        // a.style.display = 'none';
+        // a.href = url;
+        // a.download = 'agent_info.txt';
+        // document.body.appendChild(a);
+        // a.click();
+        // window.URL.revokeObjectURL(url);
         
         this.dialogRef.close();
       },

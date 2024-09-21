@@ -42,8 +42,8 @@ export class ApiService {
     );
   }
   
-  buildAgent(client: any): Observable<any> {
-    return this.post('/agents/', {
+  addPoste(client: any): Observable<any> {
+    return this.post('/postes/', {
       os: client.os,
       compagnie_id: client.compagnie_id,
     },);

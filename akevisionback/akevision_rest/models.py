@@ -11,7 +11,7 @@ class Compagnie(models.Model):
 class Poste(models.Model):
     name = models.CharField(max_length=255)
     user = models.CharField(max_length=255,null=True, blank=True)
-    compagnie = models.ForeignKey(Compagnie, on_delete=models.CASCADE,null=True, blank=True )
+    compagnie_id = models.ForeignKey(Compagnie, on_delete=models.CASCADE,null=True, blank=True )
     OS_CHOICES = [
         ('Linux', 'Linux'),
         ('Windows', 'Windows'),
@@ -19,9 +19,11 @@ class Poste(models.Model):
     os = models.CharField(max_length=10, choices=OS_CHOICES, null=True, blank=True)
     last_communication = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     address_mac = models.CharField(max_length=255, null=True, blank=True)
+    token = models.CharField(max_length=255, null=True, blank=True)
+    aes_key = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
-        unique_together = ('name', 'compagnie')
+        unique_together = ('address_mac', 'compagnie_id')
 
     def __str__(self):
         return self.name
