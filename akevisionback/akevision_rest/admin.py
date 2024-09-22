@@ -7,7 +7,10 @@ admin.site.register(Compagnie, CompagnieAdmin)
 
 
 class PosteAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'user', 'compagnie_id', 'os', 'last_communication', 'address_mac', 'token', 'aes_key')
+    search_fields = ('name', 'user', 'address_mac')
+    list_filter = ('os', 'compagnie_id')
+
 admin.site.register(Poste, PosteAdmin)
 
 

@@ -32,3 +32,11 @@ def generate_token(compagnie_id, compagnie_name):
 def generate_aes_key():
     key = Fernet.generate_key()
     return key
+
+def encrypt_message(cipher_suite, message):
+    encrypted_message = cipher_suite.encrypt(json.dumps(message).encode())
+    return encrypted_message.decode()
+
+def decrypt_message(cipher_suite, encrypted_message):
+    decrypted_message = cipher_suite.decrypt(encrypted_message.encode()).decode()
+    return json.loads(decrypted_message)
