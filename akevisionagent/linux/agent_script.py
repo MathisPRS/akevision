@@ -4,6 +4,7 @@ import json
 import os
 import getpass
 import uuid
+import psutil
 from cryptography.fernet import Fernet
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,9 +14,12 @@ def get_computer_info():
     computer_name = os.getenv('COMPUTERNAME')
     username = getpass.getuser()
     domain = os.getenv('USERDOMAIN')
-    full_username = f"{domain}\\{username}"
+    full_username = f"{domain}\{username}"
     mac_address = get_mac_address()
-    return computer_name, full_username, mac_address
+    ram_usage = psutil.virtual_memory().percent
+    cpu_usage = psutil.cpu_percent(interval=1)
+
+    return computer_name, full_username, mac_address, ram_usage, cpu_usage
 
 def get_mac_address():
     # Utilise le module uuid pour obtenir l'adresse MAC
@@ -40,11 +44,12 @@ async def connect_to_server():
     server_url = config["server_url"]
     uri = f"ws://{server_url}/ws/poste/{poste_id}/"
     token = config["token"]
+    compagnie_token = config["compagnie_token"]
     aes_key = config["aes_key"].encode()  # Assurez-vous que la clé est encodée en bytes
     cipher_suite = Fernet(aes_key)
 
     # Données à récupérer
-    computer_name, full_username, mac_address = get_computer_info()
+    computer_name, full_username, mac_address, ram_usage, cpu_usage = get_computer_info()
 
     # Ajoutez l'en-tête d'authentification
     headers = {
@@ -57,33 +62,29 @@ async def connect_to_server():
         decrypted_response_connection = decrypt_message(cipher_suite, response_connection)
         print(f'MESSAGE de reception {decrypted_response_connection}')
 
-        if decrypted_response_connection.get('action') == "request_info":
+        if decrypted_response_connection.get('action') == "request_token":
             print('OK pour INFO')
             message_send_info = {
-                'action': 'send_info',
-                'computer_name': computer_name,
-                'full_username': full_username,
+                'action': 'send_token',
+                'compagnie_token': compagnie_token,
                 'mac_address': mac_address
             }
 
-        elif decrypted_response_connection.get('action') == "request_mac":
-            print('OK pour MAC')
-            message_send_info = {
-                'action': 'send_mac',
-                'mac_address': mac_address
-            }
-
-        encrypted_message_send_info = encrypt_message(cipher_suite, message_send_info)
-        print(encrypted_message_send_info)
-        await websocket.send(encrypted_message_send_info)
+            encrypted_message_send_info = encrypt_message(cipher_suite, message_send_info)
+            print(encrypted_message_send_info)
+            await websocket.send(encrypted_message_send_info)
 
         while True:
+            computer_name, full_username, mac_address, ram_usage, cpu_usage = get_computer_info()
             message = {
                 'action': 'get_info',
                 'computer_name': computer_name,
                 'full_username': full_username,
-                'mac_address': mac_address
+                'mac_address': mac_address,
+                'ram_usage': ram_usage,
+                'cpu_usage' : cpu_usage
             }
+
             encrypted_message = encrypt_message(cipher_suite, message)
             print(f'Message encrypted: {encrypted_message}')
 
@@ -95,7 +96,7 @@ async def connect_to_server():
             print(f"Received from server: {decrypted_response}")
 
             # Pause de 5 secondes avant d'envoyer la prochaine mise à jour
-            await asyncio.sleep(20)
+            await asyncio.sleep(7)
 
 # Appel de la fonction pour établir la connexion
 asyncio.get_event_loop().run_until_complete(connect_to_server())

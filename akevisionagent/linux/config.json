@@ -1,6 +1,8 @@
 {
-    "poste_id": 19,
+    "poste_id": 20,
     "server_url": "localhost:8000",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYWduaWVfaWQiOjE5LCJjb21wYWduaWVfbmFtZSI6bnVsbH0.0MZlAzR9YT6Hjy3ieQHCA_OT8NvTdBJ1prt9rj4u8H0",
-    "aes_key" : "4xgz9NY4y6cr-u8uMtsB3x89n0J_FYhaAY0VaTAhQ4E="
+    "compagnie_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYWduaWVfaWQiOjEwLCJjb21wYWduaWVfbmFtZSI6IlBpcmF0ZSJ9.JUQow0fqZP0WE7hZGWtXPdE4Q4NJadK8ccJgz59vgvE",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYWduaWVfaWQiOjIwLCJjb21wYWduaWVfbmFtZSI6ImInZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiMjF3WVdkdWFXVmZhV1FpT2pFd0xDSmpiMjF3WVdkdWFXVmZibUZ0WlNJNklsQnBjbUYwWlNKOS5KVVFvdzBmcVpQMFdFN2haR1d0WFBkRTRRNE5KYWRLOGNjSmd6NTl2Z3ZFJyJ9.FREjx2LDbsQOicm2naHwYW8WJi9osCBcRSiRPEqxEXc",
+    "aes_key" : "frC9ZjBL26SHNsdEk5J3GxEW2CJBMNxNx47uqSLtqTg="
+    
 }

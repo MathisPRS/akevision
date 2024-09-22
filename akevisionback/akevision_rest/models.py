@@ -21,9 +21,12 @@ class Poste(models.Model):
     address_mac = models.CharField(max_length=255, null=True, blank=True)
     token = models.CharField(max_length=255, null=True, blank=True)
     aes_key = models.CharField(max_length=255, null=True, blank=True)
+    is_connected = models.BooleanField(null=True, blank=True)
+    ram_usage = models.FloatField(null=True, blank=True)
+    cpu_usage = models.FloatField(null=True, blank=True)
 
-    class Meta:
-        unique_together = ('address_mac', 'compagnie_id')
+    # class Meta:
+    #     unique_together = ('address_mac', 'compagnie_id')
 
     def __str__(self):
         return self.name
