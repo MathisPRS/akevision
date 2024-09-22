@@ -17,7 +17,7 @@ class Poste(models.Model):
         ('Windows', 'Windows'),
     ]
     os = models.CharField(max_length=10, choices=OS_CHOICES, null=True, blank=True)
-    last_communication = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    last_communication = models.DateTimeField(null=True, blank=True)
     address_mac = models.CharField(max_length=255, null=True, blank=True)
     token = models.CharField(max_length=255, null=True, blank=True)
     aes_key = models.CharField(max_length=255, null=True, blank=True)

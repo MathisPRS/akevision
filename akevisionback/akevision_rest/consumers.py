@@ -4,7 +4,7 @@ from .models import Poste
 from .service import encrypt_message, decrypt_message
 from cryptography.fernet import Fernet
 import json
-from datetime import timezone
+from datetime import datetime, timezone
 
 class PosteWebsocketConsumer(AsyncWebsocketConsumer):
 
@@ -42,21 +42,20 @@ class PosteWebsocketConsumer(AsyncWebsocketConsumer):
             # Première connexion : stocker les informations
             self.poste.name = decrypted_message.get('computer_name')
             self.poste.address_mac = decrypted_message.get('mac_address')
-            self.poste.last_communication = timezone.now()
             await sync_to_async(self.poste.save)()
             print(f'Informations stockées pour {self.poste.name}')
 
         elif decrypted_message.get('action') == 'send_mac':
             # Connexion ultérieure : vérifier l'adresse MAC
             if self.poste.address_mac == decrypted_message.get('mac_address'):
-                self.poste.last_communication = timezone.now()
-                await sync_to_async(self.poste.save)()
                 print(f'Adresse MAC vérifiée pour {self.poste.name}')
             else:
                 print(f'Adresse MAC incorrecte pour {self.poste.name}')
                 await self.close()
 
         # Montrer qu'on a bien reçu
+        self.poste.last_communication = datetime.now(timezone.utc)
+        await sync_to_async(self.poste.save)()
         reponse_message = {'action': 'received', 'data': decrypted_message}
         encrypted_response = encrypt_message(self.cipher_suite, reponse_message)
         await self.send(text_data=encrypted_response)

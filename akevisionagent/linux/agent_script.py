@@ -95,7 +95,7 @@ async def connect_to_server():
             print(f"Received from server: {decrypted_response}")
 
             # Pause de 5 secondes avant d'envoyer la prochaine mise à jour
-            await asyncio.sleep(5)
+            await asyncio.sleep(20)
 
 # Appel de la fonction pour établir la connexion
 asyncio.get_event_loop().run_until_complete(connect_to_server())
