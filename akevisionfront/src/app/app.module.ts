@@ -31,6 +31,7 @@ import { WebsiteDialogComponent } from './component/website-dialog/website-dialo
 import { GroupeWebsiteDialogComponent } from './component/groupewebsite-dialog/groupewebsite-dialog.component';
 import { WebsiteCardComponent } from './component/website-card/website-card.component';
 import { WebsiteUpdateDialogComponent } from './component/website-update-dialog/website-update-dialog.component';
+import { PosteCardComponent } from './component/poste-card/poste-card.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -52,7 +53,8 @@ registerLocaleData(localeFr, 'fr');
     WebsiteDialogComponent,
     GroupeWebsiteDialogComponent,
     WebsiteCardComponent,
-    WebsiteUpdateDialogComponent
+    WebsiteUpdateDialogComponent,
+    PosteCardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,8 @@
 <!-- poste-card.component.html -->
-<div class="card" [ngClass]="{'gris': !poste.is_connected, 'vert': poste.is_connected}">
+<div class="card" >
     <div class="card-body">
       <h5 class="card-title">{{ poste.name }}</h5>
       <p class="card-text">CPU Usage: {{ poste.cpu_usage }}</p>
-      <!-- Add other post data here -->
     </div>
   </div>
   
