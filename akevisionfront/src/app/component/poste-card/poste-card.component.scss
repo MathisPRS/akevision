@@ -1,0 +1,37 @@
+.card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .card-body {
+    display: flex;
+    align-items: center;
+  }
+  
+  .connection-indicator {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 1.5rem;
+  }
+  
+  .poste-info {
+    flex-grow: 1;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+  }
+  
+  .label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .value {
+    margin-right: 1rem;
+  }
+  

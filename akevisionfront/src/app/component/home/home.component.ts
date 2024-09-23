@@ -3,8 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CompagnieDialogComponent } from '../compagnie-dialog/compagnie-dialog.component';
 import { ClientDialogComponent } from '../client-dialog/client-dialog.component';
 import { ApiService } from '../../services/api.service';
-import { interval, Subscription } from 'rxjs';
-
+import { interval, Subscription, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -14,37 +13,52 @@ import { interval, Subscription } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
   compagnieMessage = '';
   postes: any[] = [];
+  compagnies: any[] = [];
   intervalRef: any;
 
+  constructor(private dialog: MatDialog, private apiService: ApiService) {}
 
-  constructor(private dialog: MatDialog,
-    private apiService: ApiService,
-    ) {}
-
-    ngOnInit(): void {
+  ngOnInit(): void {
+    this.fetchData();
+    this.intervalRef = setInterval(() => {
       this.fetchPostes();
-      this.intervalRef = setInterval(() => {
-        this.fetchPostes();
-      }, 10000);
-    }
-    
-    ngOnDestroy(): void {
-      clearInterval(this.intervalRef);
-    }
+    }, 10000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalRef);
+  }
+
+  fetchData(): void {
+    forkJoin({
+      compagnies: this.apiService.getAllCompagnies(),
+      postes: this.apiService.getAllPoste({ last_communication__isnull: false })
+    }).subscribe(({ compagnies, postes }) => {
+      this.compagnies = compagnies;
+      this.postes = postes;
+      console.log('Compagnies:', this.compagnies);
+      console.log('Postes:', this.postes);
+      this.sortPostesByCompagnie();
+    });
+  }
 
   fetchPostes(): void {
     this.apiService.getAllPoste({ last_communication__isnull: false }).subscribe(postes => {
       this.postes = postes;
-      console.log(postes)
-      
+      this.sortPostesByCompagnie();
+    });
+  }
+
+  sortPostesByCompagnie(): void {
+    this.compagnies.forEach(compagnie => {
+      compagnie.postes = this.postes.filter(poste => poste.compagnie_id === compagnie.id);
     });
   }
 
   openCompagnieDialog(): void {
     const dialogCompagnieRef = this.dialog.open(CompagnieDialogComponent, {
       width: '350px',
-      height :'220px'
-      
+      height: '220px'
     });
 
     dialogCompagnieRef.afterClosed().subscribe(result => {
@@ -60,7 +74,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         width: '400px',
         data: { compagnies: compagnies }
       });
-      console.log(compagnies)
       dialogAgentRef.afterClosed().subscribe(result => {
         if (result) {
           this.compagnieMessage = "La compagnie a été créée avec succès";
@@ -68,6 +81,4 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
     });
   }
-
-
 }

@@ -1,8 +1,31 @@
-<!-- poste-card.component.html -->
-<div class="card" >
-    <div class="card-body">
-      <h5 class="card-title">{{ poste.name }}</h5>
-      <p class="card-text">CPU Usage: {{ poste.cpu_usage }}</p>
+<div class="card">
+  <div class="card-body d-flex align-items-center">
+    <div class="connection-indicator" [style.background-color]="getConnectionIndicatorColor()"></div>
+    <div class="poste-info d-flex align-items-center">
+      <div class="info-item">
+        <span class="label">Nom:</span>
+        <span class="value">{{ poste.name }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">OS:</span>
+        <span class="value">{{ poste.os }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Utilisateur:</span>
+        <span class="value">{{ poste.user }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Dernière communication:</span>
+        <span class="value">{{ timeDifference }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">CPU Usage:</span>
+        <span class="value">{{ poste.cpu_usage || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">RAM Usage:</span>
+        <span class="value">{{ poste.ram_usage || 'N/A' }}</span>
+      </div>
     </div>
   </div>
-  
+</div>

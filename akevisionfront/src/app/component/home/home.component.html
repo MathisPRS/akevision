@@ -1,8 +1,15 @@
-<button mat-raised-button (click)="openCompagnieDialog()">Créer une compagnie</button>
-
-<button mat-raised-button (click)="openAgentDialog()">Ajouter un périphérique</button>
-
-<div *ngFor="let poste of postes">
-    <app-poste-card [poste]="poste"></app-poste-card>
+<div class="card d-flex">
+  <div class="card-body">
+    <button mat-raised-button (click)="openCompagnieDialog()">Créer une compagnie</button>
+    <button mat-raised-button (click)="openAgentDialog()">Ajouter un périphérique</button>
   </div>
-  
+</div>
+
+<div class="card d-flex" *ngFor="let compagnie of compagnies">
+  <div class="card-body">
+    <h5 class="card-title">{{ compagnie.nom }}</h5>
+    <div *ngFor="let poste of compagnie.postes">
+      <app-poste-card [poste]="poste"></app-poste-card>
+    </div>
+  </div>
+</div>
