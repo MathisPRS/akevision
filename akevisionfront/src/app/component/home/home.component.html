@@ -1,3 +1,8 @@
 <button mat-raised-button (click)="openCompagnieDialog()">Créer une compagnie</button>
 
 <button mat-raised-button (click)="openAgentDialog()">Ajouter un périphérique</button>
+
+<div *ngFor="let poste of postes">
+    <app-poste-card [poste]="poste"></app-poste-card>
+  </div>
+  

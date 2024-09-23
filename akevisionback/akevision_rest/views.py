@@ -1,4 +1,5 @@
 import logging
+from django.http import QueryDict
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import viewsets, status
@@ -11,7 +12,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Compagnie, Poste, Website, GroupeWebsite
-from .serializers import CompagnieSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer, PosteSerializer
+from .serializers import CompagnieSerializer, UserSerializer, GroupSerializer, WebsiteSerializer, GroupeWebsiteSerializer, PosteCreateSerializer, PosteSerializer
 from .async_service import update_ssl_expiration
 from .permissions import HasPermission
 from .service import  send_mail_information
@@ -101,7 +102,27 @@ class CompagnieViewSet(viewsets.ModelViewSet):
 
 class PosteViewSet(viewsets.ModelViewSet):
     queryset = Poste.objects.all()
-    serializer_class = PosteSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return PosteCreateSerializer
+        elif self.action == 'list':
+            return PosteSerializer
+        return super().get_serializer_class()
+
+    def list(self, request, *args, **kwargs):
+        query_params = request.query_params
+        if 'last_communication__isnull' in query_params:
+            poste = Poste.objects.all()
+            last_communication_isnull = query_params['last_communication__isnull']
+            if last_communication_isnull.lower() == 'true':
+                poste = poste.filter(last_communication__isnull=True)
+                return Response({'results': PosteSerializer(poste, many=True).data})
+            elif last_communication_isnull.lower() == 'false':
+                poste = poste.filter(last_communication__isnull=False)
+                return Response({'results': PosteSerializer(poste, many=True).data})
+        return super().list(request, *args, **kwargs)
+
 
 # class AgentViewSet(viewsets.ViewSet):
 #     def create(self, request, *args, **kwargs):

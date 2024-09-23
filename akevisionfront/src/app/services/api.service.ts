@@ -41,6 +41,12 @@ export class ApiService {
       map(response => response['results'])
     );
   }
+  getAllPoste(params?: any): Observable<any> {
+    return this.get('/postes/', { params }).pipe(
+      map(response => response['results'])
+    );
+  }
+  
   
   addPoste(client: any): Observable<any> {
     return this.post('/postes/', {

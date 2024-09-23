@@ -52,17 +52,16 @@ class CompagnieSerializer(serializers.ModelSerializer):
             compagnie.save()
             return compagnie
    
-
-class PosteSerializer(serializers.ModelSerializer):
+class PosteCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poste
         fields = ['id', 'os', 'compagnie_id']
 
     def create(self, validated_data):
-            compagnie_id = validated_data.get('compagnie_id')
+            compagnie_name = validated_data.get('compagnie_id')
             print(validated_data)
-            print(compagnie_id)
-            compagnie = Compagnie.objects.get(name=compagnie_id)
+            print(compagnie_name)
+            compagnie = Compagnie.objects.get(name=compagnie_name)
             poste = Poste.objects.create(os=validated_data['os'], compagnie_id=compagnie)
             poste.name = f"poste_{poste.id}"
             token = generate_token(poste.id, compagnie.token )
@@ -71,6 +70,11 @@ class PosteSerializer(serializers.ModelSerializer):
             poste.aes_key = aes_key.decode()
             poste.save()
             return compagnie
+    
+class PosteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Poste
+        fields = ['id', 'os', 'compagnie_id','name', 'user','is_connected', 'last_communication', 'ram_usage', 'cpu_usage']
 
 class GroupeWebsiteSerializer(serializers.ModelSerializer):
     class Meta:

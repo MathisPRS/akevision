@@ -32,14 +32,14 @@ class PosteWebsocketConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         self.poste.is_connected = False
+        self.poste.cpu_usage = None
+        self.poste.ram_usage = None
         await sync_to_async(self.poste.save)()
         print(f'Disconnected poste_id: {self.poste_id}')
 
     async def receive(self, text_data):
         # Déchiffrer le message reçu
         decrypted_message = decrypt_message(self.cipher_suite, text_data)
-        print(decrypted_message)
-
         action = decrypted_message.get('action')
         handlers = {
             'send_token': self.handle_send_token,
