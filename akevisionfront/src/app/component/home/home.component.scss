@@ -1,0 +1,23 @@
+.card-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #031b22; /* Bleu similaire à celui d'AKEMA */
+  }
+  
+  .toggle-button {
+    background-color: transparent;
+    border: none;
+    color: #007BFF;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .toggle-button:focus {
+    outline: none;
+  }
+  
+  .toggle-button:active {
+    background-color: transparent;
+    color: #007BFF;
+  }
+  

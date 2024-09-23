@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.fetchData();
     this.intervalRef = setInterval(() => {
       this.fetchPostes();
-    }, 10000);
+    }, 5000);
   }
 
   ngOnDestroy(): void {
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       compagnies: this.apiService.getAllCompagnies(),
       postes: this.apiService.getAllPoste({ last_communication__isnull: false })
     }).subscribe(({ compagnies, postes }) => {
-      this.compagnies = compagnies;
+      this.compagnies = compagnies.map(compagnie => ({ ...compagnie, isExpanded: false }));
       this.postes = postes;
       console.log('Compagnies:', this.compagnies);
       console.log('Postes:', this.postes);
@@ -53,6 +53,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.compagnies.forEach(compagnie => {
       compagnie.postes = this.postes.filter(poste => poste.compagnie_id === compagnie.id);
     });
+  }
+
+  toggleExpand(compagnie: any): void {
+    compagnie.isExpanded = !compagnie.isExpanded;
   }
 
   openCompagnieDialog(): void {

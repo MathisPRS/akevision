@@ -32,6 +32,7 @@ import { GroupeWebsiteDialogComponent } from './component/groupewebsite-dialog/g
 import { WebsiteCardComponent } from './component/website-card/website-card.component';
 import { WebsiteUpdateDialogComponent } from './component/website-update-dialog/website-update-dialog.component';
 import { PosteCardComponent } from './component/poste-card/poste-card.component';
+import { FilterCompagniesPipe } from './pipes/filter-compagnies.pipe';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -54,7 +55,8 @@ registerLocaleData(localeFr, 'fr');
     GroupeWebsiteDialogComponent,
     WebsiteCardComponent,
     WebsiteUpdateDialogComponent,
-    PosteCardComponent
+    PosteCardComponent,
+    FilterCompagniesPipe
   ],
   imports: [
     BrowserModule,
