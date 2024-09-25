@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers, exceptions
 from .models import Compagnie, Poste, GroupeWebsite, Website
-from .service import generate_token, generate_aes_key
+from .service import generate_token, generate_aes_key, create_config_file
 from django.http import HttpResponseServerError
 from akevision_rest import async_service
 
@@ -69,6 +69,8 @@ class PosteCreateSerializer(serializers.ModelSerializer):
             poste.token = token.encode('utf-8')
             poste.aes_key = aes_key.decode()
             poste.save()
+
+            create_config_file(poste)
             return compagnie
     
 class PosteSerializer(serializers.ModelSerializer):
