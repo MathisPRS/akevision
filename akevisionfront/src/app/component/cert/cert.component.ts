@@ -14,10 +14,11 @@ export class CertComponent implements OnInit {
   websiteMessage = '';
   groupewebsiteMessage = '';
   websites: any[] = [];
+  groupedWebsites: any[] = [];
+  sortByGroup = true;
 
   constructor(
     private dialog: MatDialog,
-    
     private apiService: ApiService
   ) {}
 
@@ -28,8 +29,48 @@ export class CertComponent implements OnInit {
   loadWebsites(): void {
     this.apiService.getAllWebsite().subscribe(data => {
       this.websites = data;
-      console.log(this.websites);
+      this.updateGroupedWebsites();
     });
+  }
+
+  updateGroupedWebsites(): void {
+    if (this.sortByGroup) {
+      this.groupWebsitesByGroup();
+    } else {
+      this.groupWebsitesByColor();
+    }
+  }
+
+  groupWebsitesByGroup(): void {
+    const groups = [...new Set(this.websites.map(website => website.group))];
+    this.groupedWebsites = groups.map(group => ({
+      group,
+      websites: this.websites.filter(website => website.group === group),
+      isExpanded: false
+    })).filter(group => group.websites.length > 0);
+  }
+
+  groupWebsitesByColor(): void {
+    const colors = ['gris', 'rouge', 'orange', 'vert'];
+    this.groupedWebsites = colors.map(color => ({
+      color,
+      websites: this.websites.filter(website => website.couleur === color),
+      isExpanded: false
+    })).filter(colorGroup => colorGroup.websites.length > 0);
+  }
+
+  toggleSortByGroup(): void {
+    this.sortByGroup = true;
+    this.updateGroupedWebsites();
+  }
+
+  toggleSortByColor(): void {
+    this.sortByGroup = false;
+    this.updateGroupedWebsites();
+  }
+
+  toggleExpand(group: any): void {
+    group.isExpanded = !group.isExpanded;
   }
 
   openWebSiteDialog(): void {
@@ -38,10 +79,8 @@ export class CertComponent implements OnInit {
     });
 
     dialogWebsiteRef.afterClosed().subscribe(result => {
-      
-      console.log(result);
       if (result) {
-        this.websiteMessage = "La compagnie a été créée avec succès";
+        this.websiteMessage = "Le site a été créé avec succès";
         this.loadWebsites(); // Recharger les données après l'ajout
       }
     });
@@ -55,7 +94,7 @@ export class CertComponent implements OnInit {
 
     dialogGroupeWebsiteRef.afterClosed().subscribe(result => {
       if (result) {
-        this.groupewebsiteMessage = "La compagnie a été créée avec succès";
+        this.groupewebsiteMessage = "Le groupe a été créé avec succès";
       }
     });
   }

@@ -1,3 +1,4 @@
+<!-- website-card.component.html -->
 <div class="card" [ngClass]="{'gris': website.couleur === 'gris', 'rouge': website.couleur === 'rouge', 'orange': website.couleur === 'orange', 'vert': website.couleur === 'vert'}" (click)="openUpdateDialog()">
   <div class="card-body">
     <h5 class="card-title">{{ website.nameWebsite }}</h5>

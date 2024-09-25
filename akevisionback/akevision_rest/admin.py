@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Compagnie, Poste, Website, GroupeWebsite
+from .models import Compagnie, Poste, Website, GroupeWebsite, Agent
 
 class CompagnieAdmin(admin.ModelAdmin):
     pass
@@ -22,3 +22,8 @@ admin.site.register(Website, WebsiteAdmin)
 class GroupeWebsiteAdmin(admin.ModelAdmin):
     pass
 admin.site.register(GroupeWebsite, GroupeWebsiteAdmin)
+
+
+class AgentAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Agent, AgentAdmin)

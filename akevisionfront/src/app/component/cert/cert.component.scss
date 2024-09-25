@@ -1,3 +1,30 @@
+.card-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #031b22; /* Bleu similaire à celui d'AKEMA */
+}
+
+.toggle-button {
+  background-color: transparent;
+  border: none;
+  color: #007BFF;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.toggle-button:focus {
+  outline: none;
+}
+
+.toggle-button:active {
+  background-color: transparent;
+  color: #007BFF;
+}
+
+.gray-background {
+  background-color: #e2e0e0; /* Light gray background color */
+}
+
 .card-container {
   display: flex;
   flex-wrap: wrap;
@@ -6,19 +33,29 @@
 }
 
 .card-item {
-  flex: 1 1 calc(33.333% - 16px); /* 3 cartes par ligne */
+  flex: 1 1 calc(20% - 16px); /* 5 cartes par ligne */
   box-sizing: border-box;
+  width: calc(20% - 16px); /* Taille fixe */
 }
 
 @media (max-width: 992px) {
   .card-item {
-    flex: 1 1 calc(50% - 16px); /* 2 cartes par ligne sur les écrans plus petits */
+    flex: 1 1 calc(33.333% - 16px); /* 3 cartes par ligne sur les écrans plus petits */
+    width: calc(33.333% - 16px); /* Taille fixe */
   }
 }
 
 @media (max-width: 768px) {
   .card-item {
+    flex: 1 1 calc(50% - 16px); /* 2 cartes par ligne sur les écrans encore plus petits */
+    width: calc(50% - 16px); /* Taille fixe */
+  }
+}
+
+@media (max-width: 576px) {
+  .card-item {
     flex: 1 1 100%; /* 1 carte par ligne sur les écrans encore plus petits */
+    width: 100%; /* Taille fixe */
   }
 }
 

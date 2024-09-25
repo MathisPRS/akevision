@@ -1,0 +1,9 @@
+{
+    "poste_id": 6,
+    "server_url": "localhost:8000",
+    "version_agent": "V1.0.1",
+    "compagnie_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYWduaWVfaWQiOjEwLCJjb21wYWduaWVfbmFtZSI6IlBpcmF0ZSJ9.JUQow0fqZP0WE7hZGWtXPdE4Q4NJadK8ccJgz59vgvE",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYWduaWVfaWQiOjYsImNvbXBhZ25pZV9uYW1lIjoiYidleUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKamIyMXdZV2R1YVdWZmFXUWlPakUyTENKamIyMXdZV2R1YVdWZmJtRnRaU0k2SWtOaFpHbHZJRUpoWkdScEluMC5NWXBPcjY3SmhCUVFxd0c1VTJFejVIREdacDc0SG02Y1dCTVNYNHVHTW9NJyJ9.v_jpqtyGmCSnFmxhjTFDpEM11qt4DGye9ihw0s4aCOM",
+    "aes_key" : "ddymE9lGm5BIx3G7VLaRiktmFiR1MAkB57lG9tS2F_s="
+    
+}

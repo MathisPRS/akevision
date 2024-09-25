@@ -1,11 +1,11 @@
-<div class="card d-flex">
+<div class="card d-flex gray-background">
   <div class="card-body">
     <button mat-raised-button (click)="openCompagnieDialog()">Créer une compagnie</button>
     <button mat-raised-button (click)="openAgentDialog()">Ajouter un périphérique</button>
   </div>
 </div>
 
-<div class="card d-flex" *ngFor="let compagnie of compagnies | filterCompagnies">
+<div class="card d-flex gray-background" *ngFor="let compagnie of compagnies | filterCompagnies">
   <div class="card-body">
     <h5 class="card-title">{{ compagnie.name }}</h5>
     <button class="toggle-button" (click)="toggleExpand(compagnie)">

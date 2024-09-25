@@ -1,13 +1,24 @@
-<div class="card d-flex">
+<div class="card d-flex gray-background">
   <div class="card-body">
-    <button mat-raised-button class="add-site-button" (click)="openWebSiteDialog()">Ajouter un site</button>
-    <button mat-raised-button class="relaod-site-button" (click)="openWebSiteDialog()">Rafraichir</button>
+    <button mat-raised-button (click)="openWebSiteDialog()">Ajouter un site</button>
+    <button mat-raised-button (click)="loadWebsites()">Rafraîchir</button>
+    <button mat-raised-button (click)="toggleSortByGroup()">Trier par groupe</button>
+    <button mat-raised-button (click)="toggleSortByColor()">Trier par couleur</button>
   </div>
 </div>
-<div class="card d-flex">
-  <div class="card-container">
-    <div *ngFor="let website of websites" class="card-item">
-      <app-website-card [website]="website"></app-website-card>
+
+<div class="card d-flex gray-background" *ngFor="let group of groupedWebsites">
+  <div class="card-body">
+    <h5 class="card-title">{{ sortByGroup ? group.name : group.color }}</h5>
+    <button class="toggle-button" (click)="toggleExpand(group)">
+      {{ group.isExpanded ? '&#9650;' : '&#9660;' }}
+    </button>
+    <div *ngIf="group.isExpanded">
+      <div class="card-container">
+        <div *ngFor="let website of group.websites" class="card-item">
+          <app-website-card [website]="website"></app-website-card>
+        </div>
+      </div>
     </div>
   </div>
 </div>

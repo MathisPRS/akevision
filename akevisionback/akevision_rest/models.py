@@ -31,7 +31,12 @@ class Poste(models.Model):
     def __str__(self):
         return self.name
   
- 
+class Agent(models.Model):
+    last_version = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.last_version
+
 class GroupeWebsite(models.Model):
     name = models.CharField(max_length=100)
 
